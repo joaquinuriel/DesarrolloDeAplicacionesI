@@ -1,4 +1,5 @@
 package edu.uade.ritmofit.Sedes;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +13,17 @@ import java.util.List;
 
 public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder> {
 
-    private List<SedeDto> sedeList;
-    private List<SedeDto> filteredSedeList; // Lista filtrada
+    private List<SedeDto> sedeList;         // Lista original de sedes
+    private List<SedeDto> filteredSedeList; // Lista filtrada para mostrar
 
+    /**
+     * Constructor que inicializa las listas de sedes.
+     * Si se pasa null, se crean listas vacías para evitar excepciones.
+     * @param sedeList Lista inicial de sedes (puede ser null)
+     */
     public SedeAdapter(List<SedeDto> sedeList) {
-        this.sedeList = new ArrayList<>(sedeList); // Copia original
-        this.filteredSedeList = new ArrayList<>(sedeList); // Lista inicial igual a la original
+        this.sedeList = (sedeList != null) ? new ArrayList<>(sedeList) : new ArrayList<>();
+        this.filteredSedeList = new ArrayList<>(this.sedeList);
     }
 
     @NonNull
@@ -41,21 +47,28 @@ public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder
         return filteredSedeList != null ? filteredSedeList.size() : 0;
     }
 
+    /**
+     * Actualiza los datos del adaptador con una nueva lista de sedes.
+     * @param newSedeList Nueva lista de sedes (puede ser null)
+     */
     public void updateData(List<SedeDto> newSedeList) {
-        this.sedeList = new ArrayList<>(newSedeList);
-        this.filteredSedeList = new ArrayList<>(newSedeList);
+        this.sedeList = (newSedeList != null) ? new ArrayList<>(newSedeList) : new ArrayList<>();
+        this.filteredSedeList = new ArrayList<>(this.sedeList);
         notifyDataSetChanged();
     }
 
-    // Método para filtrar las sedes por nombre
+    /**
+     * Filtra las sedes según un criterio de búsqueda.
+     * @param query Texto de búsqueda (puede ser null o vacío)
+     */
     public void filter(String query) {
         filteredSedeList.clear();
-        if (query == null || query.isEmpty()) {
+        if (query == null || query.trim().isEmpty()) {
             filteredSedeList.addAll(sedeList);
         } else {
             String filterPattern = query.toLowerCase().trim();
             for (SedeDto sede : sedeList) {
-                if (sede.getNombre().toLowerCase().contains(filterPattern)) {
+                if (sede != null && sede.getNombre() != null && sede.getNombre().toLowerCase().contains(filterPattern)) {
                     filteredSedeList.add(sede);
                 }
             }
@@ -63,6 +76,9 @@ public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder
         notifyDataSetChanged();
     }
 
+    /**
+     * ViewHolder para los elementos de la lista de sedes.
+     */
     static class SedeViewHolder extends RecyclerView.ViewHolder {
         TextView tvSedeNombre, tvSedeUbicacion, tvSedeId;
 
