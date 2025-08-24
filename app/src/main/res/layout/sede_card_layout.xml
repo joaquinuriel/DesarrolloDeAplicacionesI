@@ -25,7 +25,7 @@
 
         <!-- Ubicación de la sede -->
         <TextView
-            android:id="@+id/tvSedeUbicacion"
+            android:id="@+id/tvSedeBarrio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
@@ -34,7 +34,7 @@
 
         <!-- ID de la sede (opcional, más pequeño) -->
         <TextView
-            android:id="@+id/tvSedeId"
+            android:id="@+id/tvSedeUbicacion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"

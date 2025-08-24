@@ -5,15 +5,18 @@ public class SedeDto {
     private String nombre;
     private String ubicacion;
 
+    private String barrio;
+
     // Constructor vacío (necesario para Gson)
     public SedeDto() {
     }
 
     // Constructor con parámetros
-    public SedeDto(String id_sede, String nombre, String ubicacion) {
+    public SedeDto(String id_sede, String nombre, String ubicacion,String barrio) {
         this.id_sede = id_sede;
         this.nombre = nombre;
         this.ubicacion = ubicacion;
+        this.barrio=barrio;
     }
 
     // Getters y Setters
@@ -41,6 +44,9 @@ public class SedeDto {
         this.ubicacion = ubicacion;
     }
 
+    public String getBarrio() {
+        return barrio;
+    }
     @Override
     public String toString() {
         return nombre + " - " + ubicacion;

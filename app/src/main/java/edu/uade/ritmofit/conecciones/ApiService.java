@@ -72,7 +72,8 @@ public class ApiService {
             SedeDto sede = new SedeDto(
                     jsonObject.getString("id_sede"),
                     jsonObject.getString("nombre"),
-                    jsonObject.getString("ubicacion")
+                    jsonObject.getString("ubicacion"),
+                    jsonObject.getString("barrio")
             );
             sedes.add(sede);
             Log.d(TAG, "Sede parseada: " + sede.toString());

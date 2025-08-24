@@ -39,7 +39,7 @@ public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder
         SedeDto sede = filteredSedeList.get(position);
         holder.tvSedeNombre.setText(sede.getNombre());
         holder.tvSedeUbicacion.setText(sede.getUbicacion());
-        holder.tvSedeId.setText("ID: " + sede.getId_sede());
+        holder.tvSedeBarrio.setText(sede.getBarrio());
     }
 
     @Override
@@ -68,8 +68,17 @@ public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder
         } else {
             String filterPattern = query.toLowerCase().trim();
             for (SedeDto sede : sedeList) {
-                if (sede != null && sede.getNombre() != null && sede.getNombre().toLowerCase().contains(filterPattern)) {
-                    filteredSedeList.add(sede);
+                if (sede != null) {
+                    boolean matches = false;
+                    if (sede.getNombre() != null && sede.getNombre().toLowerCase().contains(filterPattern)) {
+                        matches = true;
+                    }
+                    if (sede.getBarrio() != null && sede.getBarrio().toLowerCase().contains(filterPattern)) {
+                        matches = true;
+                    }
+                    if (matches) {
+                        filteredSedeList.add(sede);
+                    }
                 }
             }
         }
@@ -80,13 +89,13 @@ public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder
      * ViewHolder para los elementos de la lista de sedes.
      */
     static class SedeViewHolder extends RecyclerView.ViewHolder {
-        TextView tvSedeNombre, tvSedeUbicacion, tvSedeId;
+        TextView tvSedeNombre, tvSedeUbicacion,tvSedeBarrio;
 
         public SedeViewHolder(@NonNull View itemView) {
             super(itemView);
             tvSedeNombre = itemView.findViewById(R.id.tvSedeNombre);
             tvSedeUbicacion = itemView.findViewById(R.id.tvSedeUbicacion);
-            tvSedeId = itemView.findViewById(R.id.tvSedeId);
+            tvSedeBarrio=itemView.findViewById(R.id.tvSedeBarrio);
         }
     }
 }

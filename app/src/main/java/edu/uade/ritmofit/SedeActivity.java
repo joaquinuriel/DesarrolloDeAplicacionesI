@@ -14,7 +14,7 @@ import edu.uade.ritmofit.Sedes.SedeAdapter;
 import android.util.Log;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class SedeActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private SedeViewModel viewModel;
     private RecyclerView recyclerViewSedes;
