@@ -1,4 +1,5 @@
 package edu.uade.ritmofit;
+/*por ahora esta desactivado*/
 
 import androidx.appcompat.app.AppCompatActivity;
 
