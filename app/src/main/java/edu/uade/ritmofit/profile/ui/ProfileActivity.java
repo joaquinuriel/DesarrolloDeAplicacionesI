@@ -1,4 +1,4 @@
-package edu.uade.ritmofit.profile;
+package edu.uade.ritmofit.profile.ui;
 
 import android.os.Bundle;
 
