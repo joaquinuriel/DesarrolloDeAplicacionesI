@@ -1,5 +1,7 @@
 plugins {
     id("com.android.application")
+    id("com.google.dagger.hilt.android")
+
 }
 
 android {
@@ -29,6 +31,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
 }
 
 dependencies {
@@ -45,4 +48,9 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+
+    // Dependencias de Hilt
+    implementation("com.google.dagger:hilt-android:2.51")
+    annotationProcessor("com.google.dagger:hilt-compiler:2.51")
+
 }
