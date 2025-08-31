@@ -11,14 +11,14 @@ import retrofit2.Call;
 
 @Singleton
 public class SedeRetrofitRepository implements SedeRepository {
-    private final InterfaceService sedesService;
+    private final InterfaceService apiService;
 
     @Inject
     public SedeRetrofitRepository(InterfaceService service) {
-        this.sedesService = service;
+        this.apiService = service;
     }
 
     public Call<List<SedeResponse>> getAllSedes() {
-        return sedesService.getSedes();
+        return apiService.getSedes();
     }
 }

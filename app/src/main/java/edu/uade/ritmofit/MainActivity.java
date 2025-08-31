@@ -25,10 +25,6 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.textView);
         Button buttonSedes = findViewById(R.id.buttonSedes);
 
-        buttonSedes.setOnClickListener(v -> {
-            textView.setText("Botón Sedes presionado");
-            Intent intent = new Intent(MainActivity.this, SedesActivity.class);
-            startActivity(intent);
-        });
+
     }
 }
