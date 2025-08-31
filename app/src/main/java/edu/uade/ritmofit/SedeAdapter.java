@@ -1,6 +1,7 @@
-package edu.uade.ritmofit.viewModel;
+package edu.uade.ritmofit;
 
-
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import edu.uade.ritmofit.R;
 import edu.uade.ritmofit.data.api.model.SedeResponse;
 
 public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder> {
 
     private List<SedeResponse> sedes;
+    private Context context;
 
-    public SedeAdapter(List<SedeResponse> sedes) {
+    public SedeAdapter(List<SedeResponse> sedes, Context context) {
         this.sedes = sedes;
+        this.context = context;
     }
 
     @NonNull
@@ -34,6 +36,15 @@ public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder
         SedeResponse sede = sedes.get(position);
         holder.sedeNombre.setText(sede.getNombre());
         holder.sedeUbicacion.setText(sede.getUbicacion());
+
+        // Configurar clic en la tarjeta con transición
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, SedeDetailActivity.class);
+            intent.putExtra("sedeId", sede.getId_sede()); // Pasar el ID de la sede
+            // Opcional: Agregar animación de transición
+            context.startActivity(intent);
+            // ((Activity) context).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        });
     }
 
     @Override

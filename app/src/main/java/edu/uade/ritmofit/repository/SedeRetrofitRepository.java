@@ -21,4 +21,8 @@ public class SedeRetrofitRepository implements SedeRepository {
     public Call<List<SedeResponse>> getAllSedes() {
         return apiService.getSedes();
     }
+    @Override
+    public Call<SedeResponse> getSedeById(String id) {
+        return apiService.getSedeById(id);
+    }
 }

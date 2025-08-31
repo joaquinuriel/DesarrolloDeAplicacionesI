@@ -1,8 +1,7 @@
 package edu.uade.ritmofit;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,7 +13,6 @@ import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.uade.ritmofit.data.api.model.SedeResponse;
-import edu.uade.ritmofit.viewModel.SedeAdapter;
 import edu.uade.ritmofit.viewModel.SedeViewModel;
 
 @AndroidEntryPoint
@@ -32,7 +30,7 @@ public class SedesActivity extends AppCompatActivity {
         // Inicializar RecyclerView
         recyclerViewSedes = findViewById(R.id.recyclerViewSedes);
         recyclerViewSedes.setLayoutManager(new LinearLayoutManager(this));
-        sedeAdapter = new SedeAdapter(new ArrayList<>());
+        sedeAdapter = new SedeAdapter(new ArrayList<>(), this);
         recyclerViewSedes.setAdapter(sedeAdapter);
 
         // Inicializar ViewModel con Hilt
@@ -78,9 +76,15 @@ public class SedesActivity extends AppCompatActivity {
 
     private void filterSedes(String query) {
         List<SedeResponse> filteredList = new ArrayList<>();
-        for (SedeResponse sede : allSedes) {
-            if (sede.getNombre().toLowerCase().contains(query.toLowerCase())) {
-                filteredList.add(sede);
+        if (query == null || query.isEmpty()) {
+            filteredList.addAll(allSedes); // Si la consulta está vacía, mostrar todas las sedes
+        } else {
+            query = query.toLowerCase();
+            for (SedeResponse sede : allSedes) {
+                if (sede.getNombre().toLowerCase().contains(query) ||
+                        sede.getUbicacion().toLowerCase().contains(query)) {
+                    filteredList.add(sede);
+                }
             }
         }
         sedeAdapter.updateSedes(filteredList);
