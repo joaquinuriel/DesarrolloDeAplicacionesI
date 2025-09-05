@@ -45,3 +45,5 @@ local.properties
 /app/.cxx
 /app/src/main/.externalNativeBuild
 /app/.externalNativeBuild
+
+.java-version
