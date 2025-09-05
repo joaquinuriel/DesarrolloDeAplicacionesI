@@ -1,10 +1,21 @@
 package edu.uade.ritmofit;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
+import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.ActionCodeSettings;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LogInActivity extends AppCompatActivity {
 
@@ -20,9 +31,31 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     public void onWillLogin(View view) {
-        // TODO: Validar login
+        EditText emailInput = findViewById(R.id.editTextEmail);
+        String userEmail = emailInput.getText().toString();
 
-        Intent intent = new Intent(this, PasswordActivity.class);
-        startActivity(intent);
+        Log.d(TAG, "Email: " + userEmail);
+
+        ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
+                .setUrl("https://desarrollo-i.web.app/__/auth/action")
+                .setHandleCodeInApp(true)
+                .setAndroidPackageName("edu.uade.ritmofit", true, "12")
+                .build();
+
+        FirebaseAuth.getInstance()
+                .sendSignInLinkToEmail(userEmail, actionCodeSettings)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "Email sent: " + userEmail);
+
+                        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+                        prefs.edit().putString("emailForSignIn", userEmail).apply();
+
+                        Intent intent = new Intent(this, PasswordActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+
     }
 }
