@@ -1,8 +1,6 @@
-package edu.uade.ritmofit;
+package edu.uade.ritmofit.home;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -11,8 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.uade.ritmofit.model.Turno;
-import edu.uade.ritmofit.service.TurnoService;
+import edu.uade.ritmofit.R;
+import edu.uade.ritmofit.home.model.Turno;
+import edu.uade.ritmofit.home.service.TurnoService;
 
 
 public class HomeActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package edu.uade.ritmofit.model;
+package edu.uade.ritmofit.home.model;
 
 public class Turno {
     private String clase = "Boxeo";

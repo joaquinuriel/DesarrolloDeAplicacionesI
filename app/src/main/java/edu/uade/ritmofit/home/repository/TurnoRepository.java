@@ -1,9 +1,9 @@
-package edu.uade.ritmofit.repository;
+package edu.uade.ritmofit.home.repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.uade.ritmofit.model.Turno;
+import edu.uade.ritmofit.home.model.Turno;
 
 public class TurnoRepository {
     private List<Turno> listaTurnos;

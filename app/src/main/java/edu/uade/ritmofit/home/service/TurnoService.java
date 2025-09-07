@@ -1,9 +1,9 @@
-package edu.uade.ritmofit.service;
+package edu.uade.ritmofit.home.service;
 
 import java.util.List;
 
-import edu.uade.ritmofit.model.Turno;
-import edu.uade.ritmofit.repository.TurnoRepository;
+import edu.uade.ritmofit.home.model.Turno;
+import edu.uade.ritmofit.home.repository.TurnoRepository;
 
 public class TurnoService {
     private TurnoRepository repo;
