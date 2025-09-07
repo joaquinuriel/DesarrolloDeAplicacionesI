@@ -1,6 +1,6 @@
-package edu.uade.ritmofit.data.api;
+package edu.uade.ritmofit.classes.service;
 
-import edu.uade.ritmofit.data.model.Profesor;
+import edu.uade.ritmofit.classes.model.Profesor;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

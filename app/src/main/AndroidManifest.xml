@@ -13,9 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DesarrolloDeAplicacionesI"
         tools:targetApi="31" >
+
         <activity
             android:name=".profile.ui.ProfileActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".classes.activity.ClassesActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".classes.activity.ClassDetailActivity"
+            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true" >
@@ -24,11 +34,16 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".home.HomeActivity"
+
+        <activity
+            android:name=".home.HomeActivity"
             android:exported="false" />
+
         <activity android:name=".LogInActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".PasswordActivity" />
+
     </application>
+
 
 </manifest>

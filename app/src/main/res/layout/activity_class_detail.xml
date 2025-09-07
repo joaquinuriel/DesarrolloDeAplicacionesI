@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5"
-    tools:context=".ui.classes.activity.ClassDetailActivity">
+    tools:context=".classes.activity.ClassDetailActivity">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="0dp"

@@ -1,4 +1,4 @@
-package edu.uade.ritmofit.ui.classes.activity;
+package edu.uade.ritmofit.classes.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,14 +6,11 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.appbar.MaterialToolbar;
-
 import edu.uade.ritmofit.R;
-import edu.uade.ritmofit.data.model.Class;
+import edu.uade.ritmofit.classes.model.Class;
 
 public class ClassDetailActivity extends AppCompatActivity {
 
@@ -40,6 +37,7 @@ public class ClassDetailActivity extends AppCompatActivity {
         i.putExtra(EXTRA_ESTADO, clase.getEstado());
         context.startActivity(i);
     }
+
 
 
     @Override

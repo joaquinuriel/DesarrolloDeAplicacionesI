@@ -1,30 +1,25 @@
-package edu.uade.ritmofit.ui.classes.activity;
+package edu.uade.ritmofit.classes.activity;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 
 import edu.uade.ritmofit.R;
-import edu.uade.ritmofit.data.api.ClassApiService;
-import edu.uade.ritmofit.data.api.ProfesorApiService;
-import edu.uade.ritmofit.data.api.SedeApiService;
-import edu.uade.ritmofit.data.model.Class;
+import edu.uade.ritmofit.classes.service.ClassApiService;
+import edu.uade.ritmofit.classes.service.ProfesorApiService;
+import edu.uade.ritmofit.classes.service.SedeApiService;
+import edu.uade.ritmofit.classes.model.Class;
 import edu.uade.ritmofit.data.api.ApiClient;
 
 import java.util.ArrayList;
@@ -33,9 +28,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import edu.uade.ritmofit.data.model.Profesor;
-import edu.uade.ritmofit.data.model.Sede;
-import edu.uade.ritmofit.ui.classes.adapter.ClassesAdapter;
+import edu.uade.ritmofit.classes.model.Profesor;
+import edu.uade.ritmofit.classes.model.Sede;
+import edu.uade.ritmofit.classes.adapter.ClassesAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

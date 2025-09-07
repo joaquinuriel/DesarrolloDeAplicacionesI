@@ -1,8 +1,8 @@
-package edu.uade.ritmofit.data.api;
+package edu.uade.ritmofit.classes.service;
 
 import java.util.List;
 
-import edu.uade.ritmofit.data.model.Class;
+import edu.uade.ritmofit.classes.model.Class;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

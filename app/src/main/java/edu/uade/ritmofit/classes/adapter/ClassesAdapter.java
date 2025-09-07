@@ -1,4 +1,4 @@
-package edu.uade.ritmofit.ui.classes.adapter;
+package edu.uade.ritmofit.classes.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +7,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import edu.uade.ritmofit.R;
-import edu.uade.ritmofit.data.model.Class;
+import edu.uade.ritmofit.classes.model.Class;
 import java.util.List;
 
 public class ClassesAdapter extends RecyclerView.Adapter<ClassesAdapter.ClassViewHolder> {

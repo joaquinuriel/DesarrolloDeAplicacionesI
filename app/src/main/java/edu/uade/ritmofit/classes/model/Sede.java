@@ -1,4 +1,4 @@
-package edu.uade.ritmofit.data.model;
+package edu.uade.ritmofit.classes.model;
 
 import com.google.gson.annotations.SerializedName;
 
