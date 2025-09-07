@@ -1,21 +1,17 @@
 package edu.uade.ritmofit;
 /*por ahora esta desactivado*/
 
-import android.content.Intent;
-import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
-import edu.uade.ritmofit.classes.activity.ClassesActivity;
-
+import android.content.Intent;
+import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Por ahora redirigimos directo a ClassesActivity
-        startActivity(new Intent(this, ClassesActivity.class));
     }
 
     @Override
