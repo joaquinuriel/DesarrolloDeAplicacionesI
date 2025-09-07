@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "edu.uade.ritmofit"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "edu.uade.ritmofit"

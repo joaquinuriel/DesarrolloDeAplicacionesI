@@ -1,7 +1,9 @@
 package edu.uade.ritmofit;
+/*por ahora esta desactivado*/
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
@@ -10,5 +12,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+
+        Intent intent = new Intent(this, LogInActivity.class);
+        startActivity(intent);
     }
 }
