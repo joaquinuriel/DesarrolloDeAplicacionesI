@@ -1,4 +1,4 @@
-package edu.uade.ritmofit;
+package edu.uade.ritmofit.Sedes.n;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import edu.uade.ritmofit.data.api.model.SedeResponse;
+import edu.uade.ritmofit.R;
+import edu.uade.ritmofit.Sedes.n.model.SedeResponse;
 
 public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder> {
 

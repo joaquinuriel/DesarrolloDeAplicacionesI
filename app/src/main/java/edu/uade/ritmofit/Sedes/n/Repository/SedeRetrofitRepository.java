@@ -1,12 +1,12 @@
-package edu.uade.ritmofit.repository;
+package edu.uade.ritmofit.Sedes.n.Repository;
 
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import edu.uade.ritmofit.Modules.InterfaceService;
-import edu.uade.ritmofit.data.api.model.SedeResponse;
+import edu.uade.ritmofit.Sedes.n.Modules.InterfaceService;
+import edu.uade.ritmofit.Sedes.n.model.SedeResponse;
 import retrofit2.Call;
 
 @Singleton

@@ -1,4 +1,4 @@
-package edu.uade.ritmofit.viewModel;
+package edu.uade.ritmofit.Sedes.n.viewModel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -11,8 +11,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import edu.uade.ritmofit.data.api.model.SedeResponse;
-import edu.uade.ritmofit.repository.SedeRepository;
+import edu.uade.ritmofit.Sedes.n.model.SedeResponse;
+import edu.uade.ritmofit.Sedes.n.Repository.SedeRepository;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

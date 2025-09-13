@@ -15,7 +15,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".SedesActivity"
+            android:name=".Sedes.n.SedesActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SedeDetailActivity"
+            android:name=".Sedes.n.SedeDetailActivity"
         android:exported="false" /> <!-- No necesita ser exportada, ya que se accede internamente -->
     </application>
 </manifest>

@@ -1,4 +1,4 @@
-package edu.uade.ritmofit.data.api.model;
+package edu.uade.ritmofit.Sedes.n.model;
 
 public class SedeResponse {
 

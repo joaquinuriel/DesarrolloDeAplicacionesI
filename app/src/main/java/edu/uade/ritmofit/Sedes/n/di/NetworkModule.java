@@ -1,11 +1,11 @@
-package edu.uade.ritmofit.di;
+package edu.uade.ritmofit.Sedes.n.di;
 
 import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.components.SingletonComponent;
-import edu.uade.ritmofit.Modules.InterfaceService;
+import edu.uade.ritmofit.Sedes.n.Modules.InterfaceService;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

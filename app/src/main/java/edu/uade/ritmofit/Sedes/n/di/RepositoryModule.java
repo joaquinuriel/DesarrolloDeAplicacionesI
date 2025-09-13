@@ -1,4 +1,4 @@
-package edu.uade.ritmofit.di;
+package edu.uade.ritmofit.Sedes.n.di;
 
 
 
@@ -6,8 +6,8 @@ import dagger.Binds;
 import dagger.Module;
 import dagger.hilt.InstallIn;
 import dagger.hilt.components.SingletonComponent;
-import edu.uade.ritmofit.repository.SedeRepository;
-import edu.uade.ritmofit.repository.SedeRetrofitRepository;
+import edu.uade.ritmofit.Sedes.n.Repository.SedeRepository;
+import edu.uade.ritmofit.Sedes.n.Repository.SedeRetrofitRepository;
 
 import javax.inject.Singleton;
 
