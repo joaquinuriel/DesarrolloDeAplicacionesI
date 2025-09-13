@@ -1,8 +1,8 @@
-package edu.uade.ritmofit.Sedes.n.Repository;
+package edu.uade.ritmofit.Sedes.Repository;
 
 import java.util.List;
 
-import edu.uade.ritmofit.Sedes.n.model.SedeResponse;
+import edu.uade.ritmofit.Sedes.Model.SedeResponse;
 import retrofit2.Call;
 
 public interface SedeRepository {

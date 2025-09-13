@@ -1,4 +1,4 @@
-package edu.uade.ritmofit.Sedes.n;
+package edu.uade.ritmofit.Sedes;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.uade.ritmofit.R;
-import edu.uade.ritmofit.Sedes.n.model.SedeResponse;
-import edu.uade.ritmofit.Sedes.n.viewModel.SedeViewModel;
+import edu.uade.ritmofit.Sedes.Model.SedeResponse;
+import edu.uade.ritmofit.Sedes.viewModel.SedeViewModel;
 
 @AndroidEntryPoint
 public class SedeDetailActivity extends AppCompatActivity {

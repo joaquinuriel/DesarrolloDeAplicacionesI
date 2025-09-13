@@ -1,8 +1,8 @@
-package edu.uade.ritmofit.Sedes.n.Modules;
+package edu.uade.ritmofit.Sedes.Modules;
 
 import java.util.List;
 
-import edu.uade.ritmofit.Sedes.n.model.SedeResponse;
+import edu.uade.ritmofit.Sedes.Model.SedeResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

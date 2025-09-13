@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <!-- Fragmento LoginFragment como destino inicial -->
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="edu.uade.ritmofit.auth.LoginFragment"
+        android:label="Login">
+        <action
+            android:id="@+id/action_login_to_classes"
+            app:destination="@id/classesFragment" />
+    </fragment>
+
+    <!-- Fragmento ClassesFragment -->
+    <fragment
+        android:id="@+id/classesFragment"
+        android:name="edu.uade.ritmofit.classes.activity.ClassesFragment"
+        android:label="Clases">
+        <action
+            android:id="@+id/action_classes_to_detail"
+            app:destination="@id/classDetailFragment" />
+    </fragment>
+
+    <!-- Fragmento ClassDetailFragment -->
+    <fragment
+        android:id="@+id/classDetailFragment"
+        android:name="edu.uade.ritmofit.classes.activity.ClassDetailFragment"
+        android:label="Detalle">
+        <argument
+            android:name="classId"
+            app:argType="integer"
+            android:defaultValue="-1"
+            app:nullable="false" />
+        <argument
+            android:name="disciplina"
+            app:argType="string" />
+        <argument
+            android:name="fecha"
+            app:argType="string" />
+        <argument
+            android:name="hora"
+            app:argType="string" />
+        <argument
+            android:name="duracion"
+            app:argType="java.lang.Double" />
+        <argument
+            android:name="profesor"
+            app:argType="string" />
+        <argument
+            android:name="sede"
+            app:argType="string" />
+        <argument
+            android:name="estado"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_detail_to_classes"
+            app:destination="@id/classesFragment"
+            app:popUpTo="@id/classesFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+</navigation>

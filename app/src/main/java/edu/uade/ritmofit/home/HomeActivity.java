@@ -1,53 +1,38 @@
 package edu.uade.ritmofit.home;
 
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import dagger.hilt.android.AndroidEntryPoint;
 import edu.uade.ritmofit.R;
-import edu.uade.ritmofit.home.model.Turno;
-import edu.uade.ritmofit.home.service.TurnoService;
-
-
+@AndroidEntryPoint
 public class HomeActivity extends AppCompatActivity {
-    private ListView turnosListView;
-    private TurnoService service;
-    private List<Turno> listaTurnos;
+
+    private AppBarConfiguration appBarConfiguration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        service = new TurnoService();
-        listaTurnos = service.getAllTurn();
+        // Configurar Toolbar como ActionBar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        // Configurar NavController
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+    }
 
-        ArrayList<String> displayTurnos = new ArrayList<>();
-        for (Turno turn : listaTurnos){
-            displayTurnos.add(turn.getClase() + "-" + turn.getSede() + "-" + turn.getFecha());
-        }
-
-        turnosListView = findViewById(R.id.listViewTurnos);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                displayTurnos
-        );
-
-        turnosListView.setAdapter(adapter);
-/*
-        turnosListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-            }
-        });
-        TODO COMPLETAR
-        */
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
 }

@@ -1,81 +1,19 @@
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#F5F5F5"
-    tools:context=".classes.activity.ClassDetailActivity">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.card.MaterialCardView
+    <fragment
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="24dp"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="10dp"
-        app:cardBackgroundColor="@android:color/white"
+        android:layout_height="0dp"
+        app:navGraph="@navigation/nav_graph"
+        app:defaultNavHost="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:padding="24dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tvTitleDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Disciplina"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:layout_gravity="center"/>
-
-            <TextView
-                android:id="@+id/tvMetaDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Fecha - Hora - Duración"
-                android:layout_marginTop="8dp"
-                android:layout_gravity="center"/>
-
-            <TextView
-                android:id="@+id/tvInstructorDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Profesor"
-                android:layout_marginTop="4dp"
-                android:layout_gravity="center"/>
-
-            <TextView
-                android:id="@+id/tvAddressDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sede"
-                android:layout_marginTop="4dp"
-                android:layout_gravity="center"/>
-
-            <TextView
-                android:id="@+id/tvEstado"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Estado"
-                android:layout_marginTop="4dp"
-                android:textStyle="italic"
-                android:layout_gravity="center"/>
-
-            <Button
-                android:id="@+id/btnReservar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Reservar"
-                android:backgroundTint="?attr/colorPrimary"
-                android:textColor="@android:color/white"/>
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

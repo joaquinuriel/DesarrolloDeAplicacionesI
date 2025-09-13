@@ -7,23 +7,34 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import edu.uade.ritmofit.R;
-import edu.uade.ritmofit.Sedes.Model.SedeDto;
+import edu.uade.ritmofit.Sedes.Model.SedeResponse;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder> {
 
-    private List<SedeDto> sedeList;         // Lista original de sedes
-    private List<SedeDto> filteredSedeList; // Lista filtrada para mostrar
+    private List<SedeResponse> sedeList;         // Lista original de sedes
+    private List<SedeResponse> filteredSedeList; // Lista filtrada para mostrar
+    private OnItemClickListener listener;       // Callback para clics
+
+
 
     /**
-     * Constructor que inicializa las listas de sedes.
-     * Si se pasa null, se crean listas vacías para evitar excepciones.
-     * @param sedeList Lista inicial de sedes (puede ser null)
+     * Interfaz para manejar clics en los elementos.
      */
-    public SedeAdapter(List<SedeDto> sedeList) {
-        this.sedeList = (sedeList != null) ? new ArrayList<>(sedeList) : new ArrayList<>();
-        this.filteredSedeList = new ArrayList<>(this.sedeList);
+    public interface OnItemClickListener {
+        void onItemClick(SedeResponse sede);
+    }
+
+    /**
+     * Constructor que inicializa las listas de sedes y el listener.
+     * @param listener Callback para manejar clics (puede ser null)
+     */
+    public SedeAdapter(OnItemClickListener listener) {
+        this.listener = listener;
+        this.sedeList = new ArrayList<>();
+        this.filteredSedeList = new ArrayList<>();
     }
 
     @NonNull
@@ -36,10 +47,17 @@ public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull SedeViewHolder holder, int position) {
-        SedeDto sede = filteredSedeList.get(position);
+        SedeResponse sede = filteredSedeList.get(position);
         holder.tvSedeNombre.setText(sede.getNombre());
         holder.tvSedeUbicacion.setText(sede.getUbicacion());
         holder.tvSedeBarrio.setText(sede.getBarrio());
+
+        // Configurar clic en el item
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(sede);
+            }
+        });
     }
 
     @Override
@@ -47,13 +65,19 @@ public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder
         return filteredSedeList != null ? filteredSedeList.size() : 0;
     }
 
+
+
     /**
      * Actualiza los datos del adaptador con una nueva lista de sedes.
      * @param newSedeList Nueva lista de sedes (puede ser null)
      */
-    public void updateData(List<SedeDto> newSedeList) {
-        this.sedeList = (newSedeList != null) ? new ArrayList<>(newSedeList) : new ArrayList<>();
-        this.filteredSedeList = new ArrayList<>(this.sedeList);
+    public void updateData(List<SedeResponse> newSedeList) {
+        this.sedeList.clear();
+        this.filteredSedeList.clear();
+        if (newSedeList != null) {
+            this.sedeList.addAll(newSedeList);
+            this.filteredSedeList.addAll(newSedeList);
+        }
         notifyDataSetChanged();
     }
 
@@ -67,7 +91,7 @@ public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder
             filteredSedeList.addAll(sedeList);
         } else {
             String filterPattern = query.toLowerCase().trim();
-            for (SedeDto sede : sedeList) {
+            for (SedeResponse sede : sedeList) {
                 if (sede != null) {
                     boolean matches = false;
                     if (sede.getNombre() != null && sede.getNombre().toLowerCase().contains(filterPattern)) {
@@ -89,13 +113,13 @@ public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder
      * ViewHolder para los elementos de la lista de sedes.
      */
     static class SedeViewHolder extends RecyclerView.ViewHolder {
-        TextView tvSedeNombre, tvSedeUbicacion,tvSedeBarrio;
+        TextView tvSedeNombre, tvSedeUbicacion, tvSedeBarrio;
 
         public SedeViewHolder(@NonNull View itemView) {
             super(itemView);
             tvSedeNombre = itemView.findViewById(R.id.tvSedeNombre);
             tvSedeUbicacion = itemView.findViewById(R.id.tvSedeUbicacion);
-            tvSedeBarrio=itemView.findViewById(R.id.tvSedeBarrio);
+            tvSedeBarrio = itemView.findViewById(R.id.tvSedeBarrio);
         }
     }
 }
