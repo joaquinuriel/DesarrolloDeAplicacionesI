@@ -1,0 +1,15 @@
+<resources>
+    <string-array name="sites">
+        <item>Todas</item>
+        <item>Palermo</item>
+        <item>Caballito</item>
+        <item>Belgrano</item>
+    </string-array>
+
+    <string-array name="disciplines">
+        <item>Todas</item>
+        <item>Yoga</item>
+        <item>Funcional</item>
+        <item>Spinning</item>
+    </string-array>
+</resources>
