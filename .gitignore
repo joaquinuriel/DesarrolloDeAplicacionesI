@@ -1,5 +1,6 @@
 *.iml
 .gradle
+/.idea/
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -13,3 +14,37 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Archivos y carpetas generados por Gradle
+.gradle/
+/build/
+
+# Archivos de configuración del IDE (Android Studio)
+.idea/
+.vs/
+.classpath
+.project
+.settings/
+.vscode/
+
+# Archivos de depuración y temporales
+*.iml
+*.iws
+*.ipr
+local.properties
+/captures
+.DS_Store
+
+# Archivos del sistema
+# Archivos de compilación de pruebas
+# Archivos de Android Studio específicos
+/gradle
+/app/build
+/out
+/gen
+/bin
+/app/.cxx
+/app/src/main/.externalNativeBuild
+/app/.externalNativeBuild
+
+.java-version

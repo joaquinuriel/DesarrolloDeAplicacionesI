@@ -1,7 +1,9 @@
 package edu.uade.ritmofit;
+/*por ahora esta desactivado*/
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,5 +22,13 @@ public class MainActivity extends AppCompatActivity {
         Button buttonSedes = findViewById(R.id.buttonSedes);
 
 
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+
+        Intent intent = new Intent(this, LogInActivity.class);
+        startActivity(intent);
     }
 }
