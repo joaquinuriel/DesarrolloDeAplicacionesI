@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,7 +54,9 @@ public class SedesFragment extends Fragment {
         recyclerViewSedes.addItemDecoration(dividerItemDecoration);
 
         sedeAdapter = new SedeAdapter(sede -> {
-            ((SedesActivity) requireActivity()).navigateToDetail(sede.getId_sede());
+            Bundle bundle = new Bundle();
+            bundle.putString("sedeId", sede.getId_sede());
+            Navigation.findNavController(view).navigate(R.id.action_sedes_to_sedeDetail, bundle);
         });
         recyclerViewSedes.setAdapter(sedeAdapter);
 

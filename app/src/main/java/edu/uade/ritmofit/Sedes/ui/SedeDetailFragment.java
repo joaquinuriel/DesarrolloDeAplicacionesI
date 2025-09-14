@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import edu.uade.ritmofit.R;
@@ -42,27 +41,27 @@ public class SedeDetailFragment extends Fragment {
         // Inicializar ViewModel
         viewModel = new ViewModelProvider(requireActivity()).get(SedeViewModel.class);
 
+        // Obtener sedeId de los argumentos
+        String sedeId = getArguments() != null ? getArguments().getString("sedeId") : null;
+        if (sedeId != null) {
+            viewModel.fetchSedeDetail(sedeId); // Llamar a fetchSedeDetail con el ID
+        }
+
         // Observar los detalles de la sede
-        viewModel.getSedeDetail().observe(getViewLifecycleOwner(), new Observer<SedeDto>() { // Cambiado a SedeDto
-            @Override
-            public void onChanged(SedeDto sede) {
-                if (sede != null) {
-                    Log.d(TAG, "Detalle de sede recibido: " + sede.getId_sede());
-                    detailNombre.setText(sede.getNombre());
-                    detailUbicacion.setText(sede.getUbicacion());
-                    detailBarrio.setText(sede.getBarrio());
-                }
+        viewModel.getSedeDetail().observe(getViewLifecycleOwner(), sede -> {
+            if (sede != null) {
+                Log.d(TAG, "Detalle de sede recibido: " + sede.getId_sede());
+                detailNombre.setText(sede.getNombre());
+                detailUbicacion.setText(sede.getUbicacion());
+                detailBarrio.setText(sede.getBarrio());
             }
         });
 
         // Observar errores
-        viewModel.getError().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String error) {
-                if (error != null) {
-                    Log.w(TAG, "Error recibido: " + error);
-                    // Podrías mostrar el error en un Toast
-                }
+        viewModel.getError().observe(getViewLifecycleOwner(), error -> {
+            if (error != null) {
+                Log.w(TAG, "Error recibido: " + error);
+                // Podrías mostrar el error en un Toast
             }
         });
     }

@@ -72,7 +72,10 @@ public class HomeFragment extends Fragment {
         NavController navController = Navigation.findNavController(view);
 
         btnProfile.setOnClickListener(v -> navController.navigate(R.id.action_home_to_profile));
-        btnSedes.setOnClickListener(v -> navController.navigate(R.id.action_home_to_sedes));
+        btnSedes.setOnClickListener(v -> {
+
+            navController.navigate(R.id.action_home_to_sedes_graph);
+        });
         btnClasses.setOnClickListener(v -> navController.navigate(R.id.action_home_to_classes));
         btnLogout.setOnClickListener(v -> {
             authRepository.clearAccessToken();

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -28,19 +29,31 @@ public class ClassDetailFragment extends Fragment {
         tvEstado = view.findViewById(R.id.tvEstado);
         btnReservar = view.findViewById(R.id.btnReservar);
 
-        // Obtener argumentos pasados desde ClassesFragment
-        ClassDetailFragmentArgs args = ClassDetailFragmentArgs.fromBundle(getArguments());
-        String title = args.getClassId() > 0 ? "Clase " + args.getClassId() : "Detalles";
-        String disciplina = args.getDisciplina();
-        String fecha = args.getFecha();
-        String hora = args.getHora();
-        Double duracion = args.getDuracion();
-        String profesor = args.getProfesor();
-        String sede = args.getSede();
-        String estado = args.getEstado();
+        // Obtener argumentos directamente del Bundle
+        Bundle args = getArguments();
+        if (args == null) {
+            Toast.makeText(requireContext(), "No se recibieron datos", Toast.LENGTH_SHORT).show();
+            Navigation.findNavController(view).navigateUp();
+            return view;
+        }
+
+        // Extraer valores del Bundle con claves específicas
+        String classId = args.getString("classId");
+        String title = (classId != null && !classId.isEmpty()) ? "Clase " + classId : "Detalles";
+        String disciplina = args.getString("disciplina");
+        String fecha = args.getString("fecha");
+        String hora = args.getString("hora");
+        Double duracion = args.getDouble("duracion");
+        String profesor = args.getString("profesor");
+        String sede = args.getString("sede");
+        String estado = args.getString("estado");
 
         tvTitleDetail.setText(disciplina != null ? disciplina : "Sin título");
-        tvMetaDetail.setText(String.format("%s %s • %.0f min", fecha, hora, duracion));
+        String formattedMeta = "Sin datos";
+        if (fecha != null && hora != null && duracion != null) {
+            formattedMeta = String.format("%s %s • %.0f min", fecha, hora, duracion);
+        }
+        tvMetaDetail.setText(formattedMeta);
         tvInstructorDetail.setText("Profesor: " + (profesor != null ? profesor : "Sin profesor"));
         tvAddressDetail.setText("Sede: " + (sede != null ? sede : "Sin sede"));
         tvEstado.setText("Estado: " + (estado != null ? estado : "Sin estado"));
@@ -50,7 +63,6 @@ public class ClassDetailFragment extends Fragment {
             btnReservar.setText("Reservado ✔︎");
         });
 
-        // Botón de regreso
         Button backButton = view.findViewById(R.id.back_button);
         if (backButton != null) {
             backButton.setOnClickListener(v -> Navigation.findNavController(v).navigateUp());

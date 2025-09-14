@@ -53,7 +53,7 @@ public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder
         // Configurar clic en el item
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onItemClick(sede); // Cambiado a SedeDto
+                listener.onItemClick(sede);
             }
         });
     }
