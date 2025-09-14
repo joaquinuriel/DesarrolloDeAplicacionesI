@@ -10,8 +10,41 @@
         android:name="edu.uade.ritmofit.auth.LoginFragment"
         android:label="Login">
         <action
-            android:id="@+id/action_login_to_classes"
+            android:id="@+id/action_login_to_home"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <!-- Fragmento HomeFragment -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="edu.uade.ritmofit.home.ui.HomeFragment"
+        android:label="Home">
+        <action
+            android:id="@+id/action_home_to_sedes"
+            app:destination="@id/sedesFragment" />
+        <action
+            android:id="@+id/action_home_to_classes"
             app:destination="@id/classesFragment" />
+        <action
+            android:id="@+id/action_home_to_profile"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_home_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- Fragmento ProfileFragment -->
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="edu.uade.ritmofit.profile.ui.ProfileFragment"
+        android:label="Profile">
+        <action
+            android:id="@+id/action_profile_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <!-- Fragmento ClassesFragment -->
@@ -59,6 +92,33 @@
             android:id="@+id/action_detail_to_classes"
             app:destination="@id/classesFragment"
             app:popUpTo="@id/classesFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <!-- Fragmento SedesFragment -->
+    <fragment
+        android:id="@+id/sedesFragment"
+        android:name="edu.uade.ritmofit.Sedes.ui.SedesFragment"
+        android:label="Sedes">
+        <action
+            android:id="@+id/action_sedes_to_detail"
+            app:destination="@id/sedeDetailFragment" />
+    </fragment>
+
+    <!-- Fragmento SedeDetailFragment -->
+    <fragment
+        android:id="@+id/sedeDetailFragment"
+        android:name="edu.uade.ritmofit.Sedes.ui.SedeDetailFragment"
+        android:label="Sede Detalle">
+        <argument
+            android:name="sedeId"
+            app:argType="string"
+            android:defaultValue=""
+            app:nullable="false" />
+        <action
+            android:id="@+id/action_sedeDetail_to_sedes"
+            app:destination="@id/sedesFragment"
+            app:popUpTo="@id/sedesFragment"
             app:popUpToInclusive="false" />
     </fragment>
 </navigation>

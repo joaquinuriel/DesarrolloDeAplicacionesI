@@ -1,4 +1,4 @@
-package edu.uade.ritmofit.Sedes;
+package edu.uade.ritmofit.Sedes.ui;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,24 +7,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import edu.uade.ritmofit.R;
-import edu.uade.ritmofit.Sedes.Model.SedeResponse;
+import edu.uade.ritmofit.Sedes.Model.SedeDto; // Cambiado de SedeResponse a SedeDto
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder> {
 
-    private List<SedeResponse> sedeList;         // Lista original de sedes
-    private List<SedeResponse> filteredSedeList; // Lista filtrada para mostrar
-    private OnItemClickListener listener;       // Callback para clics
-
-
+    private List<SedeDto> sedeList;         // Lista original de sedes (cambiada a SedeDto)
+    private List<SedeDto> filteredSedeList; // Lista filtrada para mostrar (cambiada a SedeDto)
+    private OnItemClickListener listener;   // Callback para clics
 
     /**
      * Interfaz para manejar clics en los elementos.
      */
     public interface OnItemClickListener {
-        void onItemClick(SedeResponse sede);
+        void onItemClick(SedeDto sede); // Cambiado a SedeDto
     }
 
     /**
@@ -47,7 +45,7 @@ public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull SedeViewHolder holder, int position) {
-        SedeResponse sede = filteredSedeList.get(position);
+        SedeDto sede = filteredSedeList.get(position); // Cambiado a SedeDto
         holder.tvSedeNombre.setText(sede.getNombre());
         holder.tvSedeUbicacion.setText(sede.getUbicacion());
         holder.tvSedeBarrio.setText(sede.getBarrio());
@@ -55,7 +53,7 @@ public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder
         // Configurar clic en el item
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onItemClick(sede);
+                listener.onItemClick(sede); // Cambiado a SedeDto
             }
         });
     }
@@ -65,13 +63,11 @@ public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder
         return filteredSedeList != null ? filteredSedeList.size() : 0;
     }
 
-
-
     /**
      * Actualiza los datos del adaptador con una nueva lista de sedes.
      * @param newSedeList Nueva lista de sedes (puede ser null)
      */
-    public void updateData(List<SedeResponse> newSedeList) {
+    public void updateData(List<SedeDto> newSedeList) { // Cambiado a List<SedeDto>
         this.sedeList.clear();
         this.filteredSedeList.clear();
         if (newSedeList != null) {
@@ -91,7 +87,7 @@ public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeViewHolder
             filteredSedeList.addAll(sedeList);
         } else {
             String filterPattern = query.toLowerCase().trim();
-            for (SedeResponse sede : sedeList) {
+            for (SedeDto sede : sedeList) { // Cambiado a SedeDto
                 if (sede != null) {
                     boolean matches = false;
                     if (sede.getNombre() != null && sede.getNombre().toLowerCase().contains(filterPattern)) {

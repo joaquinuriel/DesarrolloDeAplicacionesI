@@ -17,6 +17,8 @@ import androidx.navigation.Navigation;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.uade.ritmofit.R;
+import edu.uade.ritmofit.auth.model.LoginResponse;
+import edu.uade.ritmofit.auth.repository.AuthRepository;
 
 import javax.inject.Inject;
 
@@ -41,7 +43,7 @@ public class LoginFragment extends Fragment {
         // Verificar si ya hay un token
         if (authRepository.getAccessToken() != null) {
             NavController navController = Navigation.findNavController(view);
-            navController.navigate(R.id.action_login_to_classes);
+            navController.navigate(R.id.action_login_to_home);
             return;
         }
         // Inicializar los elementos de la UI
@@ -64,10 +66,11 @@ public class LoginFragment extends Fragment {
                 @Override
                 public void onSuccess(LoginResponse loginResponse) {
                     String accessToken = authRepository.getAccessToken();
+
                     Log.d("Auth", "Login successful, token: " + accessToken);
                     // Navegar a ClassesFragment
                     NavController navController = Navigation.findNavController(view);
-                    navController.navigate(R.id.action_login_to_classes);
+                    navController.navigate(R.id.action_login_to_home);
                 }
 
                 @Override

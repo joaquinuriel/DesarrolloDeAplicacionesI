@@ -1,4 +1,4 @@
-package edu.uade.ritmofit.home;
+package edu.uade.ritmofit.home.ui;
 
 import android.os.Bundle;
 
@@ -11,6 +11,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.uade.ritmofit.R;
+
 @AndroidEntryPoint
 public class HomeActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package edu.uade.ritmofit.auth;
+package edu.uade.ritmofit.auth.model;
 
 public class LoginRequest {
     private String email;

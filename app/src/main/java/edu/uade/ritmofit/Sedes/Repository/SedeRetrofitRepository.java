@@ -1,28 +1,30 @@
 package edu.uade.ritmofit.Sedes.Repository;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import edu.uade.ritmofit.Sedes.Modules.InterfaceService;
-import edu.uade.ritmofit.Sedes.Model.SedeResponse;
+import edu.uade.ritmofit.Sedes.Model.SedeDto;
+import edu.uade.ritmofit.Sedes.Service.ApiService;
 import retrofit2.Call;
+import java.util.List;
 
 @Singleton
 public class SedeRetrofitRepository implements SedeRepository {
-    private final InterfaceService apiService;
+
+    private final ApiService apiService;
 
     @Inject
-    public SedeRetrofitRepository(InterfaceService service) {
-        this.apiService = service;
+    public SedeRetrofitRepository(ApiService apiService) {
+        this.apiService = apiService;
     }
 
-    public Call<List<SedeResponse>> getAllSedes() {
-        return apiService.getSedes();
-    }
     @Override
-    public Call<SedeResponse> getSedeById(String id) {
+    public Call<List<SedeDto>> getAllSedes() {
+        return apiService.getAllSedes();
+    }
+
+    @Override
+    public Call<SedeDto> getSedeById(String id) {
         return apiService.getSedeById(id);
     }
 }

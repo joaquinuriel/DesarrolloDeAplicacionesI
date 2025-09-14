@@ -4,14 +4,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import android.util.Log;
-
 import java.util.List;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import edu.uade.ritmofit.Sedes.Model.SedeResponse;
+import edu.uade.ritmofit.Sedes.Model.SedeDto;
 import edu.uade.ritmofit.Sedes.Repository.SedeRepository;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,18 +17,19 @@ import retrofit2.Response;
 
 @HiltViewModel
 public class SedeViewModel extends ViewModel {
-    private final SedeRepository repository;
-    private final MutableLiveData<List<SedeResponse>> sedesLiveData = new MutableLiveData<>();
+
+    private final SedeRepository sedeRepository;
+    private final MutableLiveData<List<SedeDto>> sedesLiveData = new MutableLiveData<>();
     private final MutableLiveData<String> errorLiveData = new MutableLiveData<>();
-    private final MutableLiveData<SedeResponse> sedeDetailLiveData = new MutableLiveData<>();
+    private final MutableLiveData<SedeDto> sedeDetailLiveData = new MutableLiveData<>();
 
     @Inject
-    public SedeViewModel(SedeRepository repository) {
-        this.repository = repository;
+    public SedeViewModel(SedeRepository sedeRepository) {
+        this.sedeRepository = sedeRepository;
         fetchSedes();
     }
 
-    public LiveData<List<SedeResponse>> getSedes() {
+    public LiveData<List<SedeDto>> getSedes() {
         return sedesLiveData;
     }
 
@@ -38,15 +37,14 @@ public class SedeViewModel extends ViewModel {
         return errorLiveData;
     }
 
-    public LiveData<SedeResponse> getSedeDetail() {
+    public LiveData<SedeDto> getSedeDetail() {
         return sedeDetailLiveData;
     }
 
     public void fetchSedes() {
-        Call<List<SedeResponse>> call = repository.getAllSedes();
-        call.enqueue(new Callback<List<SedeResponse>>() {
+        sedeRepository.getAllSedes().enqueue(new Callback<List<SedeDto>>() {
             @Override
-            public void onResponse(Call<List<SedeResponse>> call, Response<List<SedeResponse>> response) {
+            public void onResponse(Call<List<SedeDto>> call, Response<List<SedeDto>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     sedesLiveData.setValue(response.body());
                 } else {
@@ -55,18 +53,16 @@ public class SedeViewModel extends ViewModel {
             }
 
             @Override
-            public void onFailure(Call<List<SedeResponse>> call, Throwable t) {
+            public void onFailure(Call<List<SedeDto>> call, Throwable t) {
                 errorLiveData.setValue("Error: " + t.getMessage());
-                Log.e("SedeViewModel", "Fallo en la solicitud", t);
             }
         });
     }
 
     public void fetchSedeDetail(String id) {
-        Call<SedeResponse> call = repository.getSedeById(id);
-        call.enqueue(new Callback<SedeResponse>() {
+        sedeRepository.getSedeById(id).enqueue(new Callback<SedeDto>() {
             @Override
-            public void onResponse(Call<SedeResponse> call, Response<SedeResponse> response) {
+            public void onResponse(Call<SedeDto> call, Response<SedeDto> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     sedeDetailLiveData.setValue(response.body());
                 } else {
@@ -75,9 +71,8 @@ public class SedeViewModel extends ViewModel {
             }
 
             @Override
-            public void onFailure(Call<SedeResponse> call, Throwable t) {
+            public void onFailure(Call<SedeDto> call, Throwable t) {
                 errorLiveData.setValue("Error: " + t.getMessage());
-                Log.e("SedeViewModel", "Fallo al obtener detalles", t);
             }
         });
     }

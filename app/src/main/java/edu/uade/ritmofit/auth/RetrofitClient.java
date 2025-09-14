@@ -2,11 +2,12 @@ package edu.uade.ritmofit.auth;
 
 
 
+import edu.uade.ritmofit.auth.repository.AuthApiService;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-    private static final String BASE_URL = "http:10.0.2.2:9090/";
+    private static final String BASE_URL = "http:10.0.2.2:9090/api/";
     private static Retrofit retrofit = null;
 
     public static AuthApiService getAuthApiService() {
