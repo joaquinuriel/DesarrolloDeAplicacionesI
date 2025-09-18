@@ -24,7 +24,7 @@
 
         <action
             android:id="@+id/action_home_to_profile"
-            app:destination="@id/profile_fragment"
+            app:destination="@id/profileActivity"
            />
         <action
             android:id="@+id/action_home_to_classes"
@@ -153,9 +153,11 @@
             app:destination="@id/home_fragment"/>
 
     </fragment>
-
-
-
+    <activity
+        android:id="@+id/profileActivity"
+        android:name="edu.uade.ritmofit.profile.ui.ProfileActivity"
+        android:label="activity_profile"
+        tools:layout="@layout/activity_profile" />
 
 
 </navigation>
