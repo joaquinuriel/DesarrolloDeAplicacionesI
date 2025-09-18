@@ -17,6 +17,8 @@ import retrofit2.Response;
 
 public class AuthRepository {
     private static final String PREFS_NAME = "auth_prefs";
+
+    private static final  String PERFIL_ID= "perfil_id";
     private static final String KEY_ACCESS_TOKEN = "access_token";
     private static final String KEY_TOKEN_EXPIRATION = "token_expiration";
     private static final long TOKEN_VALIDITY_DURATION_MS = 50 * 60 * 1000; // 50 minutos
@@ -59,6 +61,7 @@ public class AuthRepository {
                     sharedPreferences.edit()
                             .putString(KEY_ACCESS_TOKEN, loginResponse.getAccessToken())
                             .putLong(KEY_TOKEN_EXPIRATION, expirationTime)
+                            .putString(PERFIL_ID,loginResponse.getUserId())
                             .apply();
                     callback.onSuccess(loginResponse);
                 } else {
@@ -91,9 +94,14 @@ public class AuthRepository {
         sharedPreferences.edit()
                 .remove(KEY_ACCESS_TOKEN)
                 .remove(KEY_TOKEN_EXPIRATION)
+                .remove(PERFIL_ID)
                 .apply();
     }
 
+    public String getPerfilId() {
+        String id = sharedPreferences.getString(PERFIL_ID, null);
+        return id;
+    }
     public boolean hasValidToken() {
         String token = sharedPreferences.getString(KEY_ACCESS_TOKEN, null);
         long expirationTime = sharedPreferences.getLong(KEY_TOKEN_EXPIRATION, 0);

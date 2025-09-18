@@ -1,4 +1,4 @@
-package edu.uade.ritmofit.Sedes.di;
+package edu.uade.ritmofit.di;
 
 import dagger.Module;
 import dagger.Provides;
@@ -8,6 +8,9 @@ import edu.uade.ritmofit.Sedes.Service.ApiService;
 import edu.uade.ritmofit.Sedes.Service.InterfaceService;
 import edu.uade.ritmofit.auth.AuthInterceptor;
 import edu.uade.ritmofit.auth.repository.AuthRepository;
+import edu.uade.ritmofit.historial.Model.Repository.HistorialRepository;
+import edu.uade.ritmofit.historial.Model.Service.HistorialService;
+import edu.uade.ritmofit.historial.Model.Service.InterfaceHistorialService;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -46,5 +49,16 @@ public class NetworkModule {
     @Singleton
     public ApiService provideApiService(InterfaceService interfaceService) {
         return new ApiService(interfaceService);
+    }
+    @Provides
+    @Singleton
+    public HistorialService provideHistorialService(InterfaceHistorialService historialService) {
+        return new HistorialService(historialService);
+    }
+
+    @Provides
+    @Singleton
+    public HistorialRepository provideHistorialRepository(HistorialService historialService) {
+        return new HistorialRepository(historialService);
     }
 }
