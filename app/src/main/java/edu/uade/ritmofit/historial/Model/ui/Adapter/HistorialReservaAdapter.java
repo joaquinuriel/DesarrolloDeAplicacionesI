@@ -17,5 +17,9 @@ public class HistorialReservaAdapter {
     public String getDisciplina() { return disciplina; }
 
     public String getSede() { return sede; }
+    public void setIdReserva(String idReserva) { this.idReserva = idReserva; }
+    public void setFecha(String fecha) { this.fecha = fecha; }
+    public void setDisciplina(String disciplina) { this.disciplina = disciplina; }
+    public void setSede(String sede) { this.sede = sede; }
 
 }

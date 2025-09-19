@@ -10,7 +10,6 @@ public class ReservaDTO {
     private LocalDateTime timestampCreacion;
     private LocalDateTime timestampCheckin;
     private boolean confirmedCheckin;
-    public ReservaDTO() {}
     public ReservaDTO(String idReserva, String idClase, String idUsuario, String estado, LocalDateTime timestampCreacion, LocalDateTime timestampCheckin, boolean confirmedCheckin) {
         this.idReserva = idReserva;
         this.idClase = idClase;

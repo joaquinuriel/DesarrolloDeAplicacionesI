@@ -1,6 +1,10 @@
 package edu.uade.ritmofit.historial.Model.ui.Adapter;
 
 
+import java.util.List;
+
+import edu.uade.ritmofit.historial.Model.CalificacionDTO;
+
 public class HistorialReservaAdapterDetail {
     private String idReserva;
     private String estado;
@@ -10,16 +14,16 @@ public class HistorialReservaAdapterDetail {
     private String fechaClase;
     private String fechaClaseDuracion;
     private String disciplina;
-    private String comentario;
-    private int comentarioEstrellas;
+    private List<CalificacionDTO> calificaciones;
+
     private String sedeNombre;
     private String profesorNombre;
 
-
+    public HistorialReservaAdapterDetail() {}
     public HistorialReservaAdapterDetail(String idReserva, String estado, String timestampCreacion,
                                          String timestampCheckin, boolean confirmedCheckin,
                                          String fechaClase, String fechaClaseDuracion,
-                                         String disciplina, String comentario, int comentarioEstrellas,
+                                         String disciplina, List<CalificacionDTO> calificaciones,
                                          String sedeNombre, String profesorNombre) {
         this.idReserva = idReserva;
         this.estado = estado;
@@ -29,8 +33,8 @@ public class HistorialReservaAdapterDetail {
         this.fechaClase = fechaClase;
         this.fechaClaseDuracion = fechaClaseDuracion;
         this.disciplina = disciplina;
-        this.comentario = comentario;
-        this.comentarioEstrellas = comentarioEstrellas;
+        this.calificaciones = calificaciones;
+
         this.sedeNombre = sedeNombre;
         this.profesorNombre = profesorNombre;
     }
@@ -68,13 +72,11 @@ public class HistorialReservaAdapterDetail {
         return disciplina;
     }
 
-    public String getComentario() {
-        return comentario;
+    public List<CalificacionDTO> getCalificaciones () {
+        return calificaciones;
     }
 
-    public int getComentarioEstrellas() {
-        return comentarioEstrellas;
-    }
+
 
     public String getSedeNombre() {
         return sedeNombre;
@@ -117,13 +119,10 @@ public class HistorialReservaAdapterDetail {
         this.disciplina = disciplina;
     }
 
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
+    public void setCalificaciones(List<CalificacionDTO> calificaciones) {
+        this.calificaciones = calificaciones;
     }
 
-    public void setComentarioEstrellas(int comentarioEstrellas) {
-        this.comentarioEstrellas = comentarioEstrellas;
-    }
 
     public void setSedeNombre(String sedeNombre) {
         this.sedeNombre = sedeNombre;

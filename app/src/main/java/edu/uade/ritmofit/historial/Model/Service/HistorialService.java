@@ -4,8 +4,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import edu.uade.ritmofit.classes.model.Class;
+import edu.uade.ritmofit.classes.model.Clase;
 import edu.uade.ritmofit.classes.model.Profesor;
+import edu.uade.ritmofit.classes.model.Sede;
 import edu.uade.ritmofit.historial.Model.CalificacionDTO;
 import edu.uade.ritmofit.historial.Model.ReservaDTO;
 import retrofit2.Call;
@@ -24,18 +25,26 @@ public class HistorialService  {
         return interfaceHistorialService.getHistorial(id);
     }
 
+    public Call<ReservaDTO> getReserva(String id) {
+        return interfaceHistorialService.getReserva(id);
+    }
 
-    public Call<List<Class>> getClase(String id) {
+
+    public Call<Clase> getClase(String id) {
         return interfaceHistorialService.getClase(id);
     }
 
 
-    public Call<List<Profesor>> getProfesor(String id) {
+    public Call<Profesor> getProfesor(String id) {
         return interfaceHistorialService.getProfesor(id);
     }
 
 
-    public Call<List<CalificacionDTO>> getCalificacion(String id) {
+    public Call<CalificacionDTO> getCalificacion(String id) {
         return interfaceHistorialService.getCalificacion(id);
+    }
+
+    public Call<Sede> getSede(String id) {
+        return interfaceHistorialService.getSede(id);
     }
 }

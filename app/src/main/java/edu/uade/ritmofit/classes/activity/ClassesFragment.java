@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 import edu.uade.ritmofit.R;
-import edu.uade.ritmofit.classes.model.Class;
+import edu.uade.ritmofit.classes.model.Clase;
 import edu.uade.ritmofit.classes.service.ClassApiService;
 import edu.uade.ritmofit.classes.service.ProfesorApiService;
 import edu.uade.ritmofit.classes.service.SedeApiService;
@@ -45,8 +45,8 @@ public class ClassesFragment extends Fragment {
     private RecyclerView rvClasses;
     private TextView tvMessage;
 
-    private List<Class> allClasses = new ArrayList<>();
-    private List<Class> filtered = new ArrayList<>();
+    private List<Clase> allClases = new ArrayList<>();
+    private List<Clase> filtered = new ArrayList<>();
 
     @Nullable
     @Override
@@ -88,14 +88,14 @@ public class ClassesFragment extends Fragment {
         tvMessage.setVisibility(View.VISIBLE);
         tvMessage.setText("Cargando...");
 
-        ApiClient.createService(ClassApiService.class).getClasses().enqueue(new Callback<List<Class>>() {
+        ApiClient.createService(ClassApiService.class).getClasses().enqueue(new Callback<List<Clase>>() {
             @Override
-            public void onResponse(Call<List<Class>> call, Response<List<Class>> response) {
+            public void onResponse(Call<List<Clase>> call, Response<List<Clase>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    allClasses = response.body();
-                    filtered = new ArrayList<>(allClasses);
+                    allClases = response.body();
+                    filtered = new ArrayList<>(allClases);
 
-                    for (Class c : allClasses) {
+                    for (Clase c : allClases) {
                         loadProfesorForClass(c);
                         loadSedeForClass(c);
                     }
@@ -106,14 +106,14 @@ public class ClassesFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<Class>> call, Throwable t) {
+            public void onFailure(Call<List<Clase>> call, Throwable t) {
                 Log.e("API_ERROR", "Error en Retrofit", t);
                 showMessage("Ha surgido un error cargando las clases");
             }
         });
     }
 
-    private void loadProfesorForClass(Class clase) {
+    private void loadProfesorForClass(Clase clase) {
         if (clase.getIdProfesor() == null) return;
 
         ApiClient.createService(ProfesorApiService.class)
@@ -135,7 +135,7 @@ public class ClassesFragment extends Fragment {
                 });
     }
 
-    private void loadSedeForClass(Class clase) {
+    private void loadSedeForClass(Clase clase) {
         if (clase.getIdSede() == null) return;
 
         ApiClient.createService(SedeApiService.class)
@@ -148,7 +148,7 @@ public class ClassesFragment extends Fragment {
                             clase.setSede(sede.getNombre() + " - " + sede.getBarrio());
                             refreshList();
 
-                            setupDynamicFilters(allClasses);
+                            setupDynamicFilters(allClases);
                         }
                     }
 
@@ -159,11 +159,11 @@ public class ClassesFragment extends Fragment {
                 });
     }
 
-    private void setupDynamicFilters(List<Class> clases) {
+    private void setupDynamicFilters(List<Clase> clases) {
         Set<String> sedes = new HashSet<>();
         Set<String> disciplinas = new HashSet<>();
 
-        for (Class c : clases) {
+        for (Clase c : clases) {
             if (c.getIdSede() != null) sedes.add(c.getIdSede());
             if (c.getDisciplina() != null) disciplinas.add(c.getDisciplina());
         }
@@ -189,7 +189,7 @@ public class ClassesFragment extends Fragment {
         String date = btnDate.getText().toString();
 
         filtered.clear();
-        for (Class it : allClasses) {
+        for (Clase it : allClases) {
             boolean matches = true;
 
             if (!site.equals("Todas") && !site.isEmpty()) {
