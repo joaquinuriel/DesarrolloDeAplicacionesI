@@ -8,6 +8,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,7 +43,8 @@ public class HistorialFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerViewHistorial);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        adapter = new ReservaAdapter(reservaList);
+        NavController navController = NavHostFragment.findNavController(this); // Obtener NavController
+        adapter = new ReservaAdapter(reservaList, navController); // Pasar NavController al adaptador
         recyclerView.setAdapter(adapter);
 
         historialRepository.getHistorial(new InterfaceRepositoryHistorial.ReservasListCallback() {

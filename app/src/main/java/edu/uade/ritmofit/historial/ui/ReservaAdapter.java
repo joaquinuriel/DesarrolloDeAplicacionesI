@@ -1,12 +1,13 @@
 package edu.uade.ritmofit.historial.ui;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -18,9 +19,12 @@ import edu.uade.ritmofit.historial.Model.Reserva;
 public class ReservaAdapter extends RecyclerView.Adapter<ReservaAdapter.ReservaViewHolder> {
 
     private List<Reserva> reservaList;
+    private NavController navController; // Nuevo campo para el NavController
 
-    public ReservaAdapter(List<Reserva> reservaList) {
+
+    public ReservaAdapter(List<Reserva> reservaList, NavController navController) {
         this.reservaList = (reservaList != null) ? reservaList : new ArrayList<>();
+        this.navController = navController; // Asignar el NavController
     }
 
     @Override
@@ -37,9 +41,10 @@ public class ReservaAdapter extends RecyclerView.Adapter<ReservaAdapter.ReservaV
         holder.textViewNombreSede.setText("Sede: " + reserva.getNombre());
         holder.textViewFecha.setText("Fecha: " + reserva.getFecha());
 
-        // Botón sin funcionalidad por ahora
         holder.buttonAccion.setOnClickListener(v -> {
-            // TODO: Implementar funcionalidad del botón aquí
+            Bundle args = new Bundle();
+            args.putString("reservaId", reserva.getIdReserva());
+            navController.navigate(R.id.action_historial_to_detail, args);
         });
     }
 
