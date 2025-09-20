@@ -7,19 +7,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import edu.uade.ritmofit.R;
-import edu.uade.ritmofit.classes.model.Class;
+import edu.uade.ritmofit.classes.model.Clase;
 import java.util.List;
 
 public class ClassesAdapter extends RecyclerView.Adapter<ClassesAdapter.ClassViewHolder> {
 
     public interface OnItemClick {
-        void onClick(Class item);
+        void onClick(Clase item);
     }
 
-    private final List<Class> data;
+    private final List<Clase> data;
     private final OnItemClick listener;
 
-    public ClassesAdapter(List<Class> data, OnItemClick listener) {
+    public ClassesAdapter(List<Clase> data, OnItemClick listener) {
         this.data = data;
         this.listener = listener;
     }
@@ -50,7 +50,7 @@ public class ClassesAdapter extends RecyclerView.Adapter<ClassesAdapter.ClassVie
             tvInstructor = itemView.findViewById(R.id.tvInstructor);
         }
 
-        public void bind(Class it, OnItemClick listener) {
+        public void bind(Clase it, OnItemClick listener) {
             tvTitle.setText(it.getDisciplina());
 
             tvMeta.setText(

@@ -33,6 +33,7 @@ public class AuthRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse loginResponse = response.body();
                     Log.d("AuthRepository", "Nuevo token recibido: " + loginResponse.getAccessToken());
+                    tokenManager.saveUserId(loginResponse.getUserId());
                     tokenManager.saveToken(loginResponse.getAccessToken());
                     callback.onSuccess(loginResponse);
                 } else {

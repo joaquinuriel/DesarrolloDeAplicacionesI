@@ -3,7 +3,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Class {
+public class Clase {
 
     @SerializedName("idClase")
     private String idClase;

@@ -4,6 +4,8 @@ package edu.uade.ritmofit.auth;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
+
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 import dagger.hilt.android.qualifiers.ApplicationContext;
@@ -12,8 +14,10 @@ import javax.inject.Singleton;
 
 @Singleton
 public class TokenManager {
+    private static final String TAG = "Token manager";
     private static final String PREFS_NAME = "auth_prefs";
     private static final String KEY_ACCESS_TOKEN = "access_token";
+    private static final String KEY_USER_ID = "user_id";
     private static final String KEY_TOKEN_EXPIRATION = "token_expiration";
     private static final long TOKEN_VALIDITY_DURATION_MS = 50 * 60 * 1000;
 
@@ -33,6 +37,17 @@ public class TokenManager {
         } catch (Exception e) {
             throw new RuntimeException("Error initializing EncryptedSharedPreferences", e);
         }
+    }
+
+    public void saveUserId(String userId) {
+        sharedPreferences.edit()
+                .putString(KEY_USER_ID, userId)
+                .apply();
+        Log.d(TAG, "id de usuario guardado: " + userId);
+    }
+    public String getUserId() {
+        Log.d(TAG, "id de usuario USADO: " + sharedPreferences.getString(KEY_USER_ID, null));
+        return sharedPreferences.getString(KEY_USER_ID, null);
     }
 
     public void saveToken(String token) {
