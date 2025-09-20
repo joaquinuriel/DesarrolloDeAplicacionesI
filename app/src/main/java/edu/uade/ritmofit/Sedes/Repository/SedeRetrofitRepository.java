@@ -8,7 +8,7 @@ import edu.uade.ritmofit.Sedes.Service.ApiService;
 import retrofit2.Call;
 import java.util.List;
 
-@Singleton
+
 public class SedeRetrofitRepository implements SedeRepository {
 
     private final ApiService apiService;

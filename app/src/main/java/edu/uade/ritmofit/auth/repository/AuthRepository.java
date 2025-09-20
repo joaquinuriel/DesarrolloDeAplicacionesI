@@ -1,14 +1,8 @@
 package edu.uade.ritmofit.auth.repository;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
-import androidx.security.crypto.EncryptedSharedPreferences;
-import androidx.security.crypto.MasterKeys;
-import dagger.hilt.android.qualifiers.ApplicationContext;
-
 import javax.inject.Inject;
-
+import edu.uade.ritmofit.auth.TokenManager;
 import edu.uade.ritmofit.auth.model.LoginRequest;
 import edu.uade.ritmofit.auth.model.LoginResponse;
 import retrofit2.Call;
@@ -16,13 +10,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AuthRepository {
-    private static final String PREFS_NAME = "auth_prefs";
-    private static final String KEY_ACCESS_TOKEN = "access_token";
-    private static final String KEY_TOKEN_EXPIRATION = "token_expiration";
-    private static final long TOKEN_VALIDITY_DURATION_MS = 50 * 60 * 1000; // 50 minutos
-
     private final AuthApiService apiService;
-    private final SharedPreferences sharedPreferences;
+    private final TokenManager tokenManager;
 
     public interface LoginCallback {
         void onSuccess(LoginResponse loginResponse);
@@ -30,20 +19,9 @@ public class AuthRepository {
     }
 
     @Inject
-    public AuthRepository(@ApplicationContext Context context, AuthApiService apiService) {
+    public AuthRepository(AuthApiService apiService, TokenManager tokenManager) {
         this.apiService = apiService;
-        try {
-            String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-            this.sharedPreferences = EncryptedSharedPreferences.create(
-                    PREFS_NAME,
-                    masterKeyAlias,
-                    context,
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            );
-        } catch (Exception e) {
-            throw new RuntimeException("Error initializing EncryptedSharedPreferences", e);
-        }
+        this.tokenManager = tokenManager;
     }
 
     public void login(String username, String password, LoginCallback callback) {
@@ -54,12 +32,8 @@ public class AuthRepository {
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse loginResponse = response.body();
-                    long expirationTime = System.currentTimeMillis() + TOKEN_VALIDITY_DURATION_MS;
                     Log.d("AuthRepository", "Nuevo token recibido: " + loginResponse.getAccessToken());
-                    sharedPreferences.edit()
-                            .putString(KEY_ACCESS_TOKEN, loginResponse.getAccessToken())
-                            .putLong(KEY_TOKEN_EXPIRATION, expirationTime)
-                            .apply();
+                    tokenManager.saveToken(loginResponse.getAccessToken());
                     callback.onSuccess(loginResponse);
                 } else {
                     callback.onFailure("Login failed: " + response.message());
@@ -75,28 +49,14 @@ public class AuthRepository {
     }
 
     public String getAccessToken() {
-        String token = sharedPreferences.getString(KEY_ACCESS_TOKEN, null);
-        long expirationTime = sharedPreferences.getLong(KEY_TOKEN_EXPIRATION, 0);
-
-        if (token != null && System.currentTimeMillis() < expirationTime) {
-            return token;
-        } else {
-            clearAccessToken();
-            return null;
-        }
+        return tokenManager.getAccessToken();
     }
 
     public void clearAccessToken() {
-        Log.d("AuthRepository", "Limpiando token almacenado");
-        sharedPreferences.edit()
-                .remove(KEY_ACCESS_TOKEN)
-                .remove(KEY_TOKEN_EXPIRATION)
-                .apply();
+        tokenManager.clearAccessToken();
     }
 
     public boolean hasValidToken() {
-        String token = sharedPreferences.getString(KEY_ACCESS_TOKEN, null);
-        long expirationTime = sharedPreferences.getLong(KEY_TOKEN_EXPIRATION, 0);
-        return token != null && System.currentTimeMillis() < expirationTime;
+        return tokenManager.hasValidToken();
     }
 }
