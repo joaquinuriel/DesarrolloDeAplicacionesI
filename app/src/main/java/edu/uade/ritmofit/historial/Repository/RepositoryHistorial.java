@@ -54,7 +54,6 @@ public void getHistorial(ReservasListCallback callback) {
 
                 return;
             }
-            Log.e(TAG, "llamada al historial con respuesta ListReservaDTO: " + response.code());
             List<ReservaDTO> dtoList = response.body();
             if (dtoList.isEmpty()) {
                 callback.onSuccess(reservasList); // Retornar lista vacía si no hay reservas
@@ -90,7 +89,6 @@ public void getHistorial(ReservasListCallback callback) {
                                     }
                                     return;
                                 }
-                                Log.e(TAG, "llamada al historial con SEDE : " + sedeResponse.code());
 
                                 String sedeNombre = sedeResponse.body().getNombre();
                                 Reserva reserva = buildReserva(dto, clase, sedeNombre);
