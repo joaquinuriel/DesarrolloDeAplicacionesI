@@ -67,9 +67,13 @@ public class HomeFragment extends Fragment {
         Button btnSedes = view.findViewById(R.id.btn_sedes);
         Button btnClasses = view.findViewById(R.id.btn_classes);
         Button btnLogout = view.findViewById(R.id.btn_logout);
+        Button btnHistorial = view.findViewById(R.id.btn_historial);
 
 
         NavController navController = Navigation.findNavController(view);
+        btnHistorial.setOnClickListener(v -> navController.navigate(R.id.action_home_to_historial));
+
+
 
         btnProfile.setOnClickListener(v -> navController.navigate(R.id.action_home_to_profile));
         btnSedes.setOnClickListener(v -> {

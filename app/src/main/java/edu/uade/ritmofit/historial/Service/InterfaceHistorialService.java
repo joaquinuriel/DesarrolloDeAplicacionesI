@@ -15,18 +15,18 @@ public interface InterfaceHistorialService {
     @GET("reservas/usuario/{id}")
     Call<List<ReservaDTO>> getHistorial(@Path("id") String id);
 
-    @GET("/reservas/{id}")
+    @GET("reservas/{id}")
     Call<ReservaDTO> getReserva(@Path("id") String id);
 
-    @GET("/clases/{id}")
+    @GET("clases/{id}")
     Call<Clase> getClase(@Path("id") String id);
 
-    @GET("/profesores/{id}")
+    @GET("profesores/{id}")
     Call<Profesor> getProfesor(@Path("id") String id);
 
-    @GET("/calificaciones/{id}")
+    @GET("calificaciones/{id}")
     Call<CalificacionDTO> getCalificacion(@Path("id") String id);
 
-    @GET("/sedes/{id}")
+    @GET("sedes/{id}")
     Call<Sede> getSede(@Path("id") String id);
 }

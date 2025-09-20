@@ -16,6 +16,9 @@ import edu.uade.ritmofit.auth.AuthInterceptor;
 import edu.uade.ritmofit.auth.TokenManager;
 import edu.uade.ritmofit.auth.repository.AuthApiService;
 import edu.uade.ritmofit.auth.repository.AuthRepository;
+import edu.uade.ritmofit.historial.Repository.InterfaceRepositoryHistorial;
+import edu.uade.ritmofit.historial.Repository.RepositoryHistorial;
+import edu.uade.ritmofit.historial.Service.InterfaceHistorialService;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -64,6 +67,17 @@ public class NetworkModule {
     @Singleton
     public ApiService provideApiService(InterfaceService interfaceService) {
         return new ApiService(interfaceService);
+    }
+
+    @Provides
+    @Singleton
+    public InterfaceRepositoryHistorial providehistorialRepository (InterfaceHistorialService historialService, TokenManager tokenManager ){
+        return new RepositoryHistorial(historialService, tokenManager);
+    }
+    @Provides
+    public InterfaceHistorialService provideHistorialService(Retrofit retrofit) {
+        return retrofit.create(InterfaceHistorialService.class);
+
     }
 
 }

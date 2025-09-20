@@ -35,9 +35,21 @@
             android:id="@+id/action_home_to_login"
             app:destination="@id/login_fragment" />
 
+        <action
+            android:id="@+id/action_home_to_historial"
+            app:destination="@id/historial"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
     </fragment>
 
-
+    <fragment
+        android:id="@+id/historial"
+        android:name="edu.uade.ritmofit.historial.ui.HistorialFragment"
+        android:label="Historial"
+        tools:layout="@layout/fragment_historial_list" />
     <fragment
         android:id="@+id/sedesFragment"
         android:name="edu.uade.ritmofit.Sedes.ui.SedesFragment"
@@ -53,6 +65,9 @@
 
     </fragment>
 
+
+
+
     <fragment
         android:id="@+id/sedeDetailFragment"
         android:name="edu.uade.ritmofit.Sedes.ui.SedeDetailFragment"
@@ -63,6 +78,7 @@
 
 
     </fragment>
+
 
 
 

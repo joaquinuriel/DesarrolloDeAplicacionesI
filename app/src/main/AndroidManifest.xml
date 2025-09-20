@@ -38,6 +38,10 @@
         <activity
             android:name=".Sedes.ui.SedesActivity"
             android:exported="false" />
+        <activity
+            android:name=".historial.ui.HistorialActivity"
+            android:label="Historial"
+            android:exported="false" />
 
 
 

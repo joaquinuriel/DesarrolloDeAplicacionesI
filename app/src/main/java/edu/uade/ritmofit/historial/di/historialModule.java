@@ -14,10 +14,12 @@ import edu.uade.ritmofit.historial.Service.InterfaceHistorialService;
 @Module
 @InstallIn(SingletonComponent.class)
 public class historialModule {
-
+/*
     @Provides
     @Singleton
     public InterfaceRepositoryHistorial providehistorialRepository (InterfaceHistorialService historialService, TokenManager tokenManager ){
         return new RepositoryHistorial(historialService, tokenManager);
     }
+    */
+
 }
