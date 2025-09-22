@@ -33,7 +33,7 @@
 
         <activity android:name=".LogInActivity" />
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".PasswordActivity" />
+        <activity android:name="edu.uade.ritmofit.AuthActivity" />
     </application>
 
 </manifest>

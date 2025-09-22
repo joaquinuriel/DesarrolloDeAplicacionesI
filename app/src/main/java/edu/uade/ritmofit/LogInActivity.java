@@ -9,11 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -22,7 +19,7 @@ public class LogInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_auth);
     }
 
     public void onWillSignUp(View view) {
@@ -51,8 +48,8 @@ public class LogInActivity extends AppCompatActivity {
                         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
                         prefs.edit().putString("emailForSignIn", userEmail).apply();
 
-                        Intent intent = new Intent(this, PasswordActivity.class);
-                        startActivity(intent);
+                        // Intent intent = new Intent(this, PasswordActivity.class);
+                        // startActivity(intent);
                     }
                 });
 

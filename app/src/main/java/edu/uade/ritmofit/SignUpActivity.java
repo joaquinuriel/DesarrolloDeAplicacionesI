@@ -22,7 +22,7 @@ public class SignUpActivity extends AppCompatActivity {
     public void onWillSignUp(View view) {
         // TODO: Validar sign up
 
-        Intent intent = new Intent(this, PasswordActivity.class);
-        startActivity(intent);
+        // Intent intent = new Intent(this, PasswordActivity.class);
+        // startActivity(intent);
     }
 }
