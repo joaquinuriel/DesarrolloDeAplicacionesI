@@ -2,23 +2,21 @@ package edu.uade.ritmofit.di;
 
 import android.content.Context;
 
-import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
-import edu.uade.ritmofit.Sedes.Repository.SedeRepository;
-import edu.uade.ritmofit.Sedes.Repository.SedeRetrofitRepository;
 import edu.uade.ritmofit.Sedes.Service.ApiService;
 import edu.uade.ritmofit.Sedes.Service.InterfaceService;
 import edu.uade.ritmofit.auth.AuthInterceptor;
 import edu.uade.ritmofit.auth.TokenManager;
 import edu.uade.ritmofit.auth.repository.AuthApiService;
-import edu.uade.ritmofit.auth.repository.AuthRepository;
 import edu.uade.ritmofit.historial.Repository.InterfaceRepositoryHistorial;
 import edu.uade.ritmofit.historial.Repository.RepositoryHistorial;
 import edu.uade.ritmofit.historial.Service.InterfaceHistorialService;
+import edu.uade.ritmofit.home.repository.HomeViewModel;
+import edu.uade.ritmofit.home.service.HomeService;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -80,4 +78,9 @@ public class NetworkModule {
 
     }
 
+    @Provides
+    @Singleton
+    public HomeService provideHomeService(Retrofit retrofit) {
+        return retrofit.create(HomeService.class);
+    }
 }

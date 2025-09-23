@@ -11,6 +11,7 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -22,15 +23,14 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.uade.ritmofit.R;
 import edu.uade.ritmofit.auth.repository.AuthRepository;
-import edu.uade.ritmofit.home.model.Turno;
-import edu.uade.ritmofit.home.service.TurnoService;
+import edu.uade.ritmofit.historial.Model.ReservaDTO;
+import edu.uade.ritmofit.home.repository.HomeViewModel;
+
 @AndroidEntryPoint
 public class HomeFragment extends Fragment {
     private ListView turnosListView;
-    private TurnoService service;
-    private List<Turno> listaTurnos;
-
-
+    
+    HomeViewModel reservasViewModel;
     @Inject
     AuthRepository authRepository;
 
@@ -43,24 +43,25 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Inicializar servicio y lista de turnos
-        service = new TurnoService();
-        listaTurnos = service.getAllTurn();
-
-        // Preparar datos para mostrar en el ListView
-        ArrayList<String> displayTurnos = new ArrayList<>();
-        for (Turno turn : listaTurnos) {
-            displayTurnos.add(turn.getClase() + "-" + turn.getSede() + "-" + turn.getFecha());
-        }
-
-        // Configurar ListView
         turnosListView = view.findViewById(R.id.listViewTurnos);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                requireContext(),
-                android.R.layout.simple_list_item_1,
-                displayTurnos
-        );
-        turnosListView.setAdapter(adapter);
+
+        reservasViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+
+        reservasViewModel.getReservas().observe(getViewLifecycleOwner(), reservas -> {
+            List<String> texto = new ArrayList<>();
+            for (String reserva : reservas) {
+                texto.add(reserva);
+            }
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                    requireContext(),
+                    android.R.layout.simple_list_item_1,
+                    texto
+            );
+            turnosListView.setAdapter(adapter);
+        });
+
+        reservasViewModel.cargarReservas();
 
         // Configurar botones de navegación
         Button btnProfile = view.findViewById(R.id.btn_profile);

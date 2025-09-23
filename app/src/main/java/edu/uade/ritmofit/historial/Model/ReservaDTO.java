@@ -50,4 +50,8 @@ public class ReservaDTO {
         return confirmedCheckin;
     }
 
+    public String toString() {
+        return "ReservaDTO [idReserva=" + idReserva + ", idClase=" + idClase + ", idUsuario=" + idUsuario + ", estado=" + estado + ", timestampCreacion=" + timestampCreacion + ", timestampCheckin=" + timestampCheckin + ", confirmedCheckin=" + confirmedCheckin + "]";
+    }
+
 }
