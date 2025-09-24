@@ -14,8 +14,8 @@ import java.util.List;
 
 import edu.uade.ritmofit.R;
 import edu.uade.ritmofit.data.api.ApiClient;
-import edu.uade.ritmofit.profile.data.ProfileRepository;
-import edu.uade.ritmofit.profile.model.User;
+import edu.uade.ritmofit.profile.data.service.ProfileService;
+import edu.uade.ritmofit.profile.data.model.UserProfile;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,13 +38,13 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void loadUserProfile(String userId) {
-        ProfileRepository repo = ApiClient.createService(ProfileRepository.class);
+        ProfileService repo = ApiClient.createService(ProfileService.class);
 
-        repo.getUserbyId(userId).enqueue(new Callback<User>() {
+        repo.getUserById(userId).enqueue(new Callback<UserProfile>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    User user = response.body();
+                    UserProfile user = response.body();
                     TextView nameView = findViewById(R.id.nameProfile);
                     TextView emailView = findViewById(R.id.emailProfile);
 
@@ -56,20 +56,20 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<UserProfile> call, Throwable t) {
                 Toast.makeText(ProfileActivity.this, "Fallo de conexión", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void loadAllUsers() {
-        ProfileRepository repo = ApiClient.createService(ProfileRepository.class);
+        ProfileService repo = ApiClient.createService(ProfileService.class);
 
-        repo.getAllUsers().enqueue(new Callback<List<User>>() {
+        repo.getAllUsers().enqueue(new Callback<List<UserProfile>>() {
             @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+            public void onResponse(Call<List<UserProfile>> call, Response<List<UserProfile>> response) {
                 if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    User firstUser = response.body().get(0);
+                    UserProfile firstUser = response.body().get(0);
                     TextView nameView = findViewById(R.id.nameProfile);
                     TextView emailView = findViewById(R.id.emailProfile);
 
@@ -82,7 +82,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
+            public void onFailure(Call<List<UserProfile>> call, Throwable t) {
                 Toast.makeText(ProfileActivity.this, "Fallo de conexión al obtener usuarios", Toast.LENGTH_SHORT).show();
             }
         });
