@@ -9,12 +9,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.hilt.android.lifecycle.HiltViewModel;
 import edu.uade.ritmofit.profile.data.model.UserProfile;
 import edu.uade.ritmofit.profile.data.repository.ProfileRepository;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@HiltViewModel
 public class ProfileViewModel extends ViewModel {
     private final ProfileRepository profileRepository;
     private final MutableLiveData<UserProfile> userProfile = new MutableLiveData<>();

@@ -9,11 +9,11 @@ import edu.uade.ritmofit.profile.data.model.UserProfile;
 import edu.uade.ritmofit.profile.data.service.ProfileService;
 import retrofit2.Call;
 
-public class ProfileRepositoryImp implements ProfileRepository{
+public class ProfileRepositoryImpl implements ProfileRepository{
     private final ProfileService service;
 
     @Inject
-    public ProfileRepositoryImp() {
+    public ProfileRepositoryImpl() {
         this.service = ApiClient.createService(ProfileService.class);
     }
 

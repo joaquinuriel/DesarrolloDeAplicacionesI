@@ -5,25 +5,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
+
+import dagger.hilt.android.AndroidEntryPoint;
 
 import java.util.List;
 
 import edu.uade.ritmofit.R;
-import edu.uade.ritmofit.data.api.ApiClient;
-import edu.uade.ritmofit.profile.data.service.ProfileService;
 import edu.uade.ritmofit.profile.data.model.UserProfile;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
+@AndroidEntryPoint
 public class ProfileActivity extends AppCompatActivity {
 
+    private ProfileViewModel viewModel;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_profile);
@@ -34,57 +36,37 @@ public class ProfileActivity extends AppCompatActivity {
             return insets;
         });
 
-        loadAllUsers();
-    }
+        // Observa los LiveData del ViewModel
+        viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
 
-    private void loadUserProfile(String userId) {
-        ProfileService repo = ApiClient.createService(ProfileService.class);
-
-        repo.getUserById(userId).enqueue(new Callback<UserProfile>() {
-            @Override
-            public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    UserProfile user = response.body();
-                    TextView nameView = findViewById(R.id.nameProfile);
-                    TextView emailView = findViewById(R.id.emailProfile);
-
-                    nameView.setText("Nombre: " + user.getName());
-                    emailView.setText("Email: " + user.getEmail());
-                } else {
-                    Toast.makeText(ProfileActivity.this, "Error al obtener usuario", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserProfile> call, Throwable t) {
-                Toast.makeText(ProfileActivity.this, "Fallo de conexión", Toast.LENGTH_SHORT).show();
+        viewModel.getUserProfile().observe(this, user -> {
+            if (user != null) {
+                showUser(user);
             }
         });
-    }
 
-    private void loadAllUsers() {
-        ProfileService repo = ApiClient.createService(ProfileService.class);
-
-        repo.getAllUsers().enqueue(new Callback<List<UserProfile>>() {
-            @Override
-            public void onResponse(Call<List<UserProfile>> call, Response<List<UserProfile>> response) {
-                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    UserProfile firstUser = response.body().get(0);
-                    TextView nameView = findViewById(R.id.nameProfile);
-                    TextView emailView = findViewById(R.id.emailProfile);
-
-                    nameView.setText("Nombre: " + firstUser.getName());
-                    emailView.setText("Email: " + firstUser.getEmail());
-                    Toast.makeText(ProfileActivity.this, "Primer usuario mostrado", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(ProfileActivity.this, "Error al obtener usuarios", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<UserProfile>> call, Throwable t) {
-                Toast.makeText(ProfileActivity.this, "Fallo de conexión al obtener usuarios", Toast.LENGTH_SHORT).show();
+        viewModel.getAllUsers().observe(this, users -> {
+            if (users != null && !users.isEmpty()) {
+                showUser(users.get(0));
+                Toast.makeText(this, "Primer usuario mostrado", Toast.LENGTH_SHORT).show();
             }
         });
+
+        viewModel.getError().observe(this, errorMsg -> {
+            if (errorMsg != null) {
+                Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Cargar usuarios
+        viewModel.fetchAllUsers();
+    }
+
+    private void showUser(UserProfile user) {
+        TextView nameView = findViewById(R.id.nameProfile);
+        TextView emailView = findViewById(R.id.emailProfile);
+
+        nameView.setText("Nombre: " + user.getName());
+        emailView.setText("Email: " + user.getEmail());
     }
 }
