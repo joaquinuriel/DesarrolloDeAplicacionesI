@@ -1,4 +1,4 @@
-package edu.uade.ritmofit.Sedes.viewModel;
+package edu.uade.ritmofit.Sedes.ui;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

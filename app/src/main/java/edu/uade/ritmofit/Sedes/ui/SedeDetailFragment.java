@@ -13,8 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import edu.uade.ritmofit.R;
-import edu.uade.ritmofit.Sedes.Model.SedeDto;
-import edu.uade.ritmofit.Sedes.viewModel.SedeViewModel;
 
 public class SedeDetailFragment extends Fragment {
     private static final String TAG = "SedeDetailFragment";

@@ -18,12 +18,15 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import edu.uade.ritmofit.R;
-import edu.uade.ritmofit.Sedes.viewModel.SedeViewModel;
+import dagger.hilt.android.AndroidEntryPoint;
 
+
+
+import edu.uade.ritmofit.R;
+@AndroidEntryPoint
 public class SedesFragment extends Fragment {
     private static final String TAG = "SedesFragment";
-    private SedeViewModel viewModel;
+    private SedeViewModel viewModel ;
     private RecyclerView recyclerViewSedes;
     private SedeAdapter sedeAdapter;
     private SearchView searchViewSedes;
@@ -78,7 +81,7 @@ public class SedesFragment extends Fragment {
         });
 
         // Inicializar ViewModel
-        viewModel = new ViewModelProvider(requireActivity()).get(SedeViewModel.class);
+        viewModel = new ViewModelProvider(this).get(SedeViewModel.class);
 
         // Observar cambios en los datos
         viewModel.getSedes().observe(getViewLifecycleOwner(), sedes -> {
