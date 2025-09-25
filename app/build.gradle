@@ -75,4 +75,7 @@ dependencies {
     // Procesador de anotaciones para Hilt
     annotationProcessor 'com.google.dagger:hilt-compiler:2.51'
 
+    //material design
+
+    implementation 'com.google.android.material:material:1.11.0'
 }
