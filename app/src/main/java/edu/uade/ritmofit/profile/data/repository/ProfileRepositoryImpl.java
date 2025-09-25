@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import edu.uade.ritmofit.data.api.ApiClient;
 import edu.uade.ritmofit.profile.data.model.UserProfile;
 import edu.uade.ritmofit.profile.data.service.ProfileService;
 import retrofit2.Call;
@@ -13,8 +12,8 @@ public class ProfileRepositoryImpl implements ProfileRepository{
     private final ProfileService service;
 
     @Inject
-    public ProfileRepositoryImpl() {
-        this.service = ApiClient.createService(ProfileService.class);
+    public ProfileRepositoryImpl(ProfileService service) {
+        this.service = service;
     }
 
     @Override

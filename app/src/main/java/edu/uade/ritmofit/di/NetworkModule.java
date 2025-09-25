@@ -15,8 +15,8 @@ import edu.uade.ritmofit.auth.repository.AuthApiService;
 import edu.uade.ritmofit.historial.Repository.InterfaceRepositoryHistorial;
 import edu.uade.ritmofit.historial.Repository.RepositoryHistorial;
 import edu.uade.ritmofit.historial.Service.InterfaceHistorialService;
-import edu.uade.ritmofit.home.repository.HomeViewModel;
 import edu.uade.ritmofit.home.service.HomeService;
+import edu.uade.ritmofit.profile.data.service.ProfileService;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -82,5 +82,11 @@ public class NetworkModule {
     @Singleton
     public HomeService provideHomeService(Retrofit retrofit) {
         return retrofit.create(HomeService.class);
+    }
+
+    @Provides
+    @Singleton
+    public ProfileService provideProfileService(Retrofit retrofit) {
+        return retrofit.create(ProfileService.class);
     }
 }
