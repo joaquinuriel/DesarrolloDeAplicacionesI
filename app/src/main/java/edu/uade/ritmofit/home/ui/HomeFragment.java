@@ -15,6 +15,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +47,14 @@ public class HomeFragment extends Fragment {
 
         turnosListView = view.findViewById(R.id.listViewTurnos);
 
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                requireContext(),
+                android.R.layout.simple_list_item_1,
+                new ArrayList<>()
+        );
+
+        turnosListView.setAdapter(adapter);
+
         reservasViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         reservasViewModel.getReservas().observe(getViewLifecycleOwner(), reservas -> {
@@ -52,14 +62,16 @@ public class HomeFragment extends Fragment {
             for (String reserva : reservas) {
                 texto.add(reserva);
             }
-
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                    requireContext(),
-                    android.R.layout.simple_list_item_1,
-                    texto
-            );
-            turnosListView.setAdapter(adapter);
+            adapter.clear();
+            adapter.addAll(texto);
+            adapter.notifyDataSetChanged();
         });
+
+        turnosListView.setOnItemClickListener((adapterView, view1, i, l) -> {
+            Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                    "Hacia la pagina del QR (coming soon)",
+                    Snackbar.LENGTH_SHORT).show();
+        } );
 
         reservasViewModel.cargarReservas();
 
@@ -86,5 +98,11 @@ public class HomeFragment extends Fragment {
             authRepository.clearAccessToken();
             navController.navigate(R.id.action_home_to_login);
         });
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        reservasViewModel.cargarReservas();
     }
 }
