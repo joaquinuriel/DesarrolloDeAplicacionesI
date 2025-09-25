@@ -14,14 +14,16 @@ import androidx.lifecycle.ViewModelProvider;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import java.util.List;
+import javax.inject.Inject;
 
 import edu.uade.ritmofit.R;
+import edu.uade.ritmofit.auth.TokenManager;
 import edu.uade.ritmofit.profile.data.model.UserProfile;
 
 @AndroidEntryPoint
 public class ProfileActivity extends AppCompatActivity {
-
+    @Inject
+    TokenManager tokenManager;
     private ProfileViewModel viewModel;
 
     @Override
@@ -58,8 +60,9 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        // Cargar usuarios
-        viewModel.fetchAllUsers();
+        // Cargar usuario
+        String userId = tokenManager.getUserId();
+        viewModel.fetchUserById(userId);
     }
 
     private void showUser(UserProfile user) {
