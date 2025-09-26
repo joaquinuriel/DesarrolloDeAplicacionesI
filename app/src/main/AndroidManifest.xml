@@ -31,9 +31,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".LogInActivity" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name="edu.uade.ritmofit.AuthActivity" />
+        <activity android:name=".AuthActivity" />
     </application>
 
 </manifest>

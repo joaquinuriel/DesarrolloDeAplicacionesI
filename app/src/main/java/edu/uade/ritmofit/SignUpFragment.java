@@ -10,24 +10,25 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
 
-public class LoginFragment extends Fragment {
+public class SignUpFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_login, container, false);
+        View root = inflater.inflate(R.layout.fragment_register, container, false);
 
-        MaterialButton signInBtn = root.findViewById(R.id.confirm);
-        MaterialButton signUpBtn = root.findViewById(R.id.button3);
-
-        signInBtn.setOnClickListener(v -> {
-            ((AuthActivity) requireActivity()).confirmLogin();
-        });
+        MaterialButton signUpBtn = root.findViewById(R.id.confirm);
+        MaterialButton signInBtn = root.findViewById(R.id.redirect);
 
         signUpBtn.setOnClickListener(v -> {
-            ((AuthActivity) requireActivity()).showSignUp();
+            ((AuthActivity) requireActivity()).confirmSignUp();
+        });
+
+        signInBtn.setOnClickListener(v -> {
+            ((AuthActivity) requireActivity()).showLogin();
         });
 
         return root;
     }
 }
+
