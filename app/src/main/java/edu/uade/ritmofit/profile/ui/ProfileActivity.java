@@ -1,9 +1,8 @@
 package edu.uade.ritmofit.profile.ui;
 
 import android.os.Bundle;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,20 +11,19 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
-
 import dagger.hilt.android.AndroidEntryPoint;
-
 import javax.inject.Inject;
-
 import edu.uade.ritmofit.R;
 import edu.uade.ritmofit.auth.TokenManager;
 import edu.uade.ritmofit.profile.data.model.UserProfile;
 
 @AndroidEntryPoint
 public class ProfileActivity extends AppCompatActivity {
-    @Inject
-    TokenManager tokenManager;
+    @Inject TokenManager tokenManager;
     private ProfileViewModel viewModel;
+    private EditText nameEdit;
+    private EditText emailEdit;
+    private String userId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,35 +31,55 @@ public class ProfileActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_profile);
 
-        // Configurar Toolbar como ActionBar
+        setupToolbar();
+        setupInsets();
+        initViews();
+        setupViewModel();
+        setupListeners();
+
+        userId = tokenManager.getUserId();
+        viewModel.fetchUserById(userId);
+    }
+
+    private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
+    private void setupInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
 
-        // Observa los LiveData del ViewModel
+    private void initViews() {
+        nameEdit = findViewById(R.id.editTextName);
+        emailEdit = findViewById(R.id.editTextEmail);
+    }
+
+    private void setupViewModel() {
         viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
-
         viewModel.getUserProfile().observe(this, user -> {
-            if (user != null) {
-                showUser(user);
-            }
+            if (user != null) showUser(user);
         });
-
         viewModel.getError().observe(this, errorMsg -> {
-            if (errorMsg != null) {
-                Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
-            }
+            if (errorMsg != null) Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
         });
+    }
 
-        // Cargar usuario
-        String userId = tokenManager.getUserId();
-        viewModel.fetchUserById(userId);
+    private void setupListeners() {
+        findViewById(R.id.btnSave).setOnClickListener(v -> updateUser());
+    }
+
+    private void updateUser() {
+        String name = nameEdit.getText().toString();
+        String email = emailEdit.getText().toString();
+        UserProfile updateUser = new UserProfile(name, email);
+        viewModel.updateUser(userId, updateUser);
+        Toast.makeText(this, "Perfil actualizado", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -71,10 +89,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void showUser(UserProfile user) {
-        TextView nameView = findViewById(R.id.nameProfile);
-        TextView emailView = findViewById(R.id.emailProfile);
-
-        nameView.setText("Nombre: " + user.getName());
-        emailView.setText("Email: " + user.getEmail());
+        nameEdit.setText(user.getName());
+        emailEdit.setText(user.getEmail());
     }
 }

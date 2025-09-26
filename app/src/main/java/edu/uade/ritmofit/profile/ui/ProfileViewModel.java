@@ -5,8 +5,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
@@ -43,6 +41,24 @@ public class ProfileViewModel extends ViewModel {
                     userProfile.postValue(response.body());
                 } else {
                     error.postValue("Error al obtener usuario");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserProfile> call, Throwable t) {
+                error.postValue(t.getMessage());
+            }
+        });
+    }
+
+    public void updateUser(String id, UserProfile updatedUser) {
+        profileRepository.updateUser(id, updatedUser).enqueue(new Callback<UserProfile>() {
+            @Override
+            public void onResponse(@NonNull Call<UserProfile> call, Response<UserProfile> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    userProfile.postValue(response.body());
+                } else {
+                    error.postValue("Error al actualizar usuario");
                 }
             }
 
