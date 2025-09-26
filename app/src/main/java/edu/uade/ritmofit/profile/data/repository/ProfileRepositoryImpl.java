@@ -21,8 +21,4 @@ public class ProfileRepositoryImpl implements ProfileRepository{
         return service.getUserById(id);
     }
 
-    @Override
-    public Call<List<UserProfile>> getAllUsers() {
-        return service.getAllUsers();
-    }
 }

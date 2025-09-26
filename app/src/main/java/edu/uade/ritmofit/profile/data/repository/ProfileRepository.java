@@ -8,5 +8,4 @@ import retrofit2.Call;
 public interface ProfileRepository {
     Call<UserProfile> getUserById(String id);
 
-    Call<List<UserProfile>> getAllUsers();
 }

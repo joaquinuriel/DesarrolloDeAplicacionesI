@@ -20,7 +20,6 @@ import retrofit2.Response;
 public class ProfileViewModel extends ViewModel {
     private final ProfileRepository profileRepository;
     private final MutableLiveData<UserProfile> userProfile = new MutableLiveData<>();
-    private final MutableLiveData<List<UserProfile>> allUsers = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
 
     @Inject
@@ -30,10 +29,6 @@ public class ProfileViewModel extends ViewModel {
 
     public LiveData<UserProfile> getUserProfile() {
         return userProfile;
-    }
-
-    public LiveData<List<UserProfile>> getAllUsers() {
-        return allUsers;
     }
 
     public LiveData<String> getError() {
@@ -58,21 +53,4 @@ public class ProfileViewModel extends ViewModel {
         });
     }
 
-    public void fetchAllUsers() {
-        profileRepository.getAllUsers().enqueue(new Callback<List<UserProfile>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<UserProfile>> call, Response<List<UserProfile>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    allUsers.postValue(response.body());
-                } else {
-                    error.postValue("Error al obtener usuarios");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<UserProfile>> call, Throwable t) {
-                error.postValue(t.getMessage());
-            }
-        });
-    }
 }

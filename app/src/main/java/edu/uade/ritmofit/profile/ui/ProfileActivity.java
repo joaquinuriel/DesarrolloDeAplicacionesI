@@ -53,13 +53,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        viewModel.getAllUsers().observe(this, users -> {
-            if (users != null && !users.isEmpty()) {
-                showUser(users.get(0));
-                Toast.makeText(this, "Primer usuario mostrado", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         viewModel.getError().observe(this, errorMsg -> {
             if (errorMsg != null) {
                 Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
