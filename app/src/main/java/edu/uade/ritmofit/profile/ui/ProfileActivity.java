@@ -77,6 +77,15 @@ public class ProfileActivity extends AppCompatActivity {
         viewModel.getError().observe(this, errorMsg -> {
             if (errorMsg != null) Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
         });
+        viewModel.getInfo().observe(this, infoMsg -> {
+            if (infoMsg != null) {
+                Toast.makeText(this, infoMsg, Toast.LENGTH_SHORT).show();
+                nameEdit.setEnabled(false);
+                emailEdit.setEnabled(false);
+                saveButton.setEnabled(false);
+                editButton.setEnabled(true);
+            }
+        });
     }
 
     private void setupListeners() {
@@ -89,10 +98,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         saveButton.setOnClickListener(v -> {
             updateUser();
-            nameEdit.setEnabled(false);
-            emailEdit.setEnabled(false);
-            saveButton.setEnabled(false);
-            editButton.setEnabled(true);
         });
     }
 
@@ -101,7 +106,6 @@ public class ProfileActivity extends AppCompatActivity {
         String email = emailEdit.getText().toString();
         UserProfile updateUser = new UserProfile(name, email);
         viewModel.updateUser(userId, updateUser);
-        Toast.makeText(this, "Perfil actualizado", Toast.LENGTH_SHORT).show();
     }
 
     @Override

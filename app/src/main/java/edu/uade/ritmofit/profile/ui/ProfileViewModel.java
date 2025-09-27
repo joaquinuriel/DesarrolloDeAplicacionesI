@@ -19,6 +19,8 @@ public class ProfileViewModel extends ViewModel {
     private final ProfileRepository profileRepository;
     private final MutableLiveData<UserProfile> userProfile = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
+    private final MutableLiveData<String> info = new MutableLiveData<>();
+
 
     @Inject
     public ProfileViewModel(ProfileRepository profileRepository) {
@@ -32,6 +34,8 @@ public class ProfileViewModel extends ViewModel {
     public LiveData<String> getError() {
         return error;
     }
+    public LiveData<String> getInfo() { return info; }
+
 
     public void fetchUserById(String id) {
         profileRepository.getUserById(id).enqueue(new Callback<UserProfile>() {
@@ -52,11 +56,25 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void updateUser(String id, UserProfile updatedUser) {
+        // Validaciones básicas
+        String name = updatedUser.getName();
+        String email = updatedUser.getEmail();
+
+        if (name == null || !name.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$")) {
+            error.postValue("El nombre solo puede contener letras");
+            return;
+        }
+        if (email == null || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            error.postValue("El email no tiene un formato válido");
+            return;
+        }
+
         profileRepository.updateUser(id, updatedUser).enqueue(new Callback<UserProfile>() {
             @Override
             public void onResponse(@NonNull Call<UserProfile> call, Response<UserProfile> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     userProfile.postValue(response.body());
+                    info.postValue("Perfil actualizado");
                 } else {
                     error.postValue("Error al actualizar usuario");
                 }
