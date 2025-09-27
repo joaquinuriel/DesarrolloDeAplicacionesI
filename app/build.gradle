@@ -1,6 +1,9 @@
-apply plugin: 'com.android.application'
-apply plugin: 'com.google.dagger.hilt.android'
-apply plugin: 'androidx.navigation.safeargs'
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services'
+    id 'com.google.dagger.hilt.android'
+    id 'androidx.navigation.safeargs'
+}
 
 android {
     namespace 'edu.uade.ritmofit'
@@ -69,6 +72,12 @@ dependencies {
     // Framework Espresso para pruebas de interfaz de usuario
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
 
+    // Firebase (using BoM)
+    implementation platform('com.google.firebase:firebase-bom:34.2.0')
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.android.gms:play-services-auth:21.4.0'
+
+    // Security-Crypto
     implementation 'androidx.security:security-crypto:1.1.0'
 
     // Dependencias de Hilt (inyección de dependencias)

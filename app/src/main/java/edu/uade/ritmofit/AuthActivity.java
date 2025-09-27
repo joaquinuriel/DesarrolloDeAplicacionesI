@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat;
 import androidx.security.crypto.MasterKey;
 import androidx.security.crypto.EncryptedSharedPreferences;
 
+import java.security.PublicKey;
 import java.util.concurrent.Executor;
 
 import androidx.biometric.BiometricPrompt;
@@ -33,19 +34,15 @@ import androidx.biometric.BiometricManager;
 import javax.inject.Inject;
 
 import edu.uade.ritmofit.auth.TokenManager;
+import edu.uade.ritmofit.home.ui.HomeActivity;
 
 public class AuthActivity extends AppCompatActivity {
     private Context context;
     private Executor executor;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
-
-    private final TokenManager tokenManager;
-
     @Inject
-    public AuthActivity(TokenManager tokenManager) {
-        this.tokenManager = tokenManager;
-    }
+    public TokenManager tokenManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,6 +94,18 @@ public class AuthActivity extends AppCompatActivity {
         String username = usernameInput.getText().toString();
         String password = passwordInput.getText().toString();
 
+        Log.d(TAG, "Attempting login for user: " + username);
+
+        if (username.isEmpty()) {
+            Toast.makeText(this, "Please enter an email", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (password.isEmpty()) {
+            Toast.makeText(this, "Please enter a password", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         FirebaseAuth.getInstance()
                 .signInWithEmailAndPassword(username, password)
                 .addOnCompleteListener(task -> {
@@ -108,7 +117,9 @@ public class AuthActivity extends AppCompatActivity {
                         assert user != null;
                         tokenManager.saveToken(user.getUid());
 
-                        Intent intent = new Intent(this, MainActivity.class);
+                        Log.d(TAG, "Login successful, token: " + user.getUid());
+
+                        Intent intent = new Intent(this, HomeActivity.class);
                         startActivity(intent);
                     } else {
                         Exception e = task.getException();

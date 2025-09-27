@@ -17,7 +17,7 @@ public class SignUpFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_register, container, false);
 
-        MaterialButton signUpBtn = root.findViewById(R.id.confirm);
+        MaterialButton signUpBtn = root.findViewById(R.id.button6);
         MaterialButton signInBtn = root.findViewById(R.id.redirect);
 
         signUpBtn.setOnClickListener(v -> {

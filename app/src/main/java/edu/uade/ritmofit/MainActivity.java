@@ -18,19 +18,49 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import edu.uade.ritmofit.auth.TokenManager;
+import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+import edu.uade.ritmofit.auth.TokenManager;
+import edu.uade.ritmofit.home.ui.HomeActivity;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
 
-    private final TokenManager tokenManager = new TokenManager(this);
+    @Inject
+    public TokenManager tokenManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Configurar NavController
+        /**
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        */
+
+        /**
+        if (tokenManager.hasValidToken()) {
+            Intent newIntent = new Intent(this, HomeActivity.class);
+            startActivity(newIntent);
+            finish();
+        } else {
+            Intent newIntent = new Intent(this, AuthActivity.class);
+            startActivity(newIntent);
+            finish();
+        }
+         */
+    }
+
+    protected void onResume(){
+        super.onResume();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         Intent intent = getIntent();
@@ -67,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
                                                 if (task1.isSuccessful()) {
                                                     FirebaseUser updatedUser = task1.getResult().getUser();
 
+                                                    Log.d("Auth", "Successfully linked credentials!");
+
                                                     assert updatedUser != null;
                                                     tokenManager.saveToken(updatedUser.getUid());
                                                 } else {
@@ -84,11 +116,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("Auth", "Failed to access secure storage");
             }
         }
-
-        // Configurar NavController
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
     }
 
     @Override
