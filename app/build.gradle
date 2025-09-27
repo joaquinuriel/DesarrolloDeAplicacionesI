@@ -1,6 +1,9 @@
-apply plugin: 'com.android.application'
-apply plugin: 'com.google.dagger.hilt.android'
-apply plugin: 'androidx.navigation.safeargs'
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services'
+    id 'com.google.dagger.hilt.android'
+    id 'androidx.navigation.safeargs'
+}
 
 android {
     namespace 'edu.uade.ritmofit'
@@ -58,6 +61,8 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
     // Biblioteca para serialización/deserialización JSON
     implementation 'com.google.code.gson:gson:2.11.0'
+    implementation 'com.google.firebase:firebase-auth:24.0.1'
+    implementation 'androidx.biometric:biometric:1.1.0'
 
     // Dependencias de pruebas
     // Framework para pruebas unitarias
@@ -67,12 +72,27 @@ dependencies {
     // Framework Espresso para pruebas de interfaz de usuario
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
 
-    implementation 'androidx.security:security-crypto:1.0.0'
+    // Firebase (using BoM)
+    implementation platform('com.google.firebase:firebase-bom:34.2.0')
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.android.gms:play-services-auth:21.4.0'
+
+    // Security-Crypto
+    implementation 'androidx.security:security-crypto:1.1.0'
 
     // Dependencias de Hilt (inyección de dependencias)
     // Hilt para Android
     implementation 'com.google.dagger:hilt-android:2.51'
     // Procesador de anotaciones para Hilt
     annotationProcessor 'com.google.dagger:hilt-compiler:2.51'
+
+
+    // Dependencias de Glide (carga y manejo de imágenes)
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+
+    //material design
+
+    implementation 'com.google.android.material:material:1.11.0'
 
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,27 +20,27 @@ import edu.uade.ritmofit.historial.Model.Reserva;
 public class ReservaAdapter extends RecyclerView.Adapter<ReservaAdapter.ReservaViewHolder> {
 
     private List<Reserva> reservaList;
-    private NavController navController; // Nuevo campo para el NavController
-
+    private NavController navController;
 
     public ReservaAdapter(List<Reserva> reservaList, NavController navController) {
         this.reservaList = (reservaList != null) ? reservaList : new ArrayList<>();
-        this.navController = navController; // Asignar el NavController
+        this.navController = navController;
     }
 
+    @NonNull
     @Override
-    public ReservaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ReservaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_reserva, parent, false);
         return new ReservaViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ReservaViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ReservaViewHolder holder, int position) {
         Reserva reserva = reservaList.get(position);
-        holder.textViewIdReserva.setText("ID: " + reserva.getIdReserva());
-        holder.textViewDisciplina.setText("Disciplina: " + reserva.getDisciplina());
-        holder.textViewNombreSede.setText("Sede: " + reserva.getNombre());
-        holder.textViewFecha.setText("Fecha: " + reserva.getFecha());
+        holder.textViewIdReserva.setText("ID: " + (reserva.getIdReserva() != null ? reserva.getIdReserva() : "N/A"));
+        holder.textViewDisciplina.setText("Disciplina: " + (reserva.getDisciplina() != null ? reserva.getDisciplina() : "N/A"));
+        holder.textViewNombreSede.setText("Sede: " + (reserva.getNombre() != null ? reserva.getNombre() : "N/A"));
+        holder.textViewFecha.setText("Fecha: " + (reserva.getFecha() != null ? reserva.getFecha() : "N/A"));
 
         holder.buttonAccion.setOnClickListener(v -> {
             Bundle args = new Bundle();
@@ -57,7 +58,7 @@ public class ReservaAdapter extends RecyclerView.Adapter<ReservaAdapter.ReservaV
         TextView textViewIdReserva, textViewDisciplina, textViewNombreSede, textViewFecha;
         Button buttonAccion;
 
-        public ReservaViewHolder(View itemView) {
+        public ReservaViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewIdReserva = itemView.findViewById(R.id.textViewIdReserva);
             textViewDisciplina = itemView.findViewById(R.id.textViewDisciplina);
