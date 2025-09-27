@@ -16,6 +16,7 @@
 
     <fragment  android:id="@+id/home_fragment"
         android:name="edu.uade.ritmofit.home.ui.HomeFragment"
+        android:label="Ritmofit - Home"
         tools:layout="@layout/home_fragment">
 
         <action
@@ -77,6 +78,7 @@
     <fragment
         android:id="@+id/sedesFragment"
         android:name="edu.uade.ritmofit.Sedes.ui.SedesFragment"
+        android:label="Sedes"
         tools:layout="@layout/fragment_sedes">
         <action
             android:id="@+id/action_sedes_to_sedeDetail"
@@ -95,6 +97,7 @@
     <fragment
         android:id="@+id/sedeDetailFragment"
         android:name="edu.uade.ritmofit.Sedes.ui.SedeDetailFragment"
+        android:label="Detalles - Sede"
         tools:layout="@layout/sede_detail" >
         <argument
             android:name="sedeId"
@@ -108,8 +111,24 @@
 
 
     <fragment
+        android:id="@+id/profile_fragment"
+        android:name="edu.uade.ritmofit.profile.ui.ProfileFragment"
+        android:label="Mi Perfil"
+        tools:layout="@layout/profile_fragment"
+        >
+
+        <action
+            android:id="@+id/action_profile_to_home"
+            app:destination="@id/home_fragment" />
+
+    </fragment>
+
+
+
+    <fragment
         android:id="@+id/classesFragment"
         android:name="edu.uade.ritmofit.classes.activity.ClassesFragment"
+        android:label="Clases disponibles"
         tools:layout="@layout/fragment_classes">
         <action
             android:id="@+id/action_classes_to_detail"
@@ -149,6 +168,7 @@
     <fragment
         android:id="@+id/classDetailFragment"
         android:name="edu.uade.ritmofit.classes.activity.ClassDetailFragment"
+        android:label="Detalles - Clase"
         tools:layout="@layout/fragment_class_detail" >
         <argument
             android:name="classId"
