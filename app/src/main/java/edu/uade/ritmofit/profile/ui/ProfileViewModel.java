@@ -87,4 +87,31 @@ public class ProfileViewModel extends ViewModel {
         });
     }
 
+    public void updateUserPhoto(String id, String newPhotoBase64) {
+        UserProfile current = userProfile.getValue();
+        if (current == null) {
+            error.postValue("No se encontró el usuario");
+            return;
+        }
+
+        UserProfile updated = new UserProfile(newPhotoBase64);
+
+        profileRepository.updateUser(id, updated).enqueue(new Callback<UserProfile>() {
+            @Override
+            public void onResponse(@NonNull Call<UserProfile> call, Response<UserProfile> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    userProfile.postValue(response.body());
+                    info.postValue("Foto de perfil actualizada");
+                } else {
+                    error.postValue("Error al actualizar la foto");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserProfile> call, Throwable t) {
+                error.postValue(t.getMessage());
+            }
+        });
+    }
+
 }
