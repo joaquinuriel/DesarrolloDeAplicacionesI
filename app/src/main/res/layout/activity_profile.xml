@@ -71,10 +71,19 @@
             android:layout_marginBottom="32dp"/>
 
         <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Editar Perfil"
+            android:layout_marginBottom="4dp"/>
+
+        <Button
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Editar Perfil"/>
+            android:text="Guardar Cambios"/>
+
+
 
     </LinearLayout>
 

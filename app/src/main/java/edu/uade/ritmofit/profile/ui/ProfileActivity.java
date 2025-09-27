@@ -1,6 +1,7 @@
 package edu.uade.ritmofit.profile.ui;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
@@ -23,6 +24,8 @@ public class ProfileActivity extends AppCompatActivity {
     private ProfileViewModel viewModel;
     private EditText nameEdit;
     private EditText emailEdit;
+    private Button editButton;
+    private Button saveButton;
     private String userId;
 
     @Override
@@ -58,6 +61,12 @@ public class ProfileActivity extends AppCompatActivity {
     private void initViews() {
         nameEdit = findViewById(R.id.editTextName);
         emailEdit = findViewById(R.id.editTextEmail);
+        editButton = findViewById(R.id.btnEdit);
+        saveButton = findViewById(R.id.btnSave);
+
+        nameEdit.setEnabled(false);
+        emailEdit.setEnabled(false);
+        saveButton.setEnabled(false);
     }
 
     private void setupViewModel() {
@@ -71,7 +80,20 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        findViewById(R.id.btnSave).setOnClickListener(v -> updateUser());
+        editButton.setOnClickListener(v -> {
+            nameEdit.setEnabled(true);
+            emailEdit.setEnabled(true);
+            saveButton.setEnabled(true);
+            editButton.setEnabled(false);
+        });
+
+        saveButton.setOnClickListener(v -> {
+            updateUser();
+            nameEdit.setEnabled(false);
+            emailEdit.setEnabled(false);
+            saveButton.setEnabled(false);
+            editButton.setEnabled(true);
+        });
     }
 
     private void updateUser() {
