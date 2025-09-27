@@ -77,5 +77,8 @@ dependencies {
 
     //material design
 
+    // Dependencias de Glide (carga y manejo de imágenes)
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
     implementation 'com.google.android.material:material:1.11.0'
 }
