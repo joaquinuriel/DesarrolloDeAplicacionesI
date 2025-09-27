@@ -2,7 +2,6 @@ package edu.uade.ritmofit;
 
 import static android.content.ContentValues.TAG;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,11 +30,22 @@ import java.util.concurrent.Executor;
 import androidx.biometric.BiometricPrompt;
 import androidx.biometric.BiometricManager;
 
+import javax.inject.Inject;
+
+import edu.uade.ritmofit.auth.TokenManager;
+
 public class AuthActivity extends AppCompatActivity {
     private Context context;
     private Executor executor;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
+
+    private final TokenManager tokenManager;
+
+    @Inject
+    public AuthActivity(TokenManager tokenManager) {
+        this.tokenManager = tokenManager;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,7 +105,8 @@ public class AuthActivity extends AppCompatActivity {
                         AuthResult result = task.getResult();
                         FirebaseUser user = result.getUser();
 
-                        // guardar el token
+                        assert user != null;
+                        tokenManager.saveToken(user.getUid());
 
                         Intent intent = new Intent(this, MainActivity.class);
                         startActivity(intent);

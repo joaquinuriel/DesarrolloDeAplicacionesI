@@ -58,6 +58,8 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
     // Biblioteca para serialización/deserialización JSON
     implementation 'com.google.code.gson:gson:2.11.0'
+    implementation 'com.google.firebase:firebase-auth:24.0.1'
+    implementation 'androidx.biometric:biometric:1.1.0'
 
     // Dependencias de pruebas
     // Framework para pruebas unitarias
@@ -67,7 +69,7 @@ dependencies {
     // Framework Espresso para pruebas de interfaz de usuario
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
 
-    implementation 'androidx.security:security-crypto:1.0.0'
+    implementation 'androidx.security:security-crypto:1.1.0'
 
     // Dependencias de Hilt (inyección de dependencias)
     // Hilt para Android
