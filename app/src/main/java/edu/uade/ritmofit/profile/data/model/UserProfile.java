@@ -15,6 +15,15 @@ public class UserProfile {
     @SerializedName("foto")
     private  String foto;
 
+    public UserProfile(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+
+    public UserProfile(String foto) {
+        this.foto = foto;
+    }
+
     public String getFoto() {
         return foto;
     }

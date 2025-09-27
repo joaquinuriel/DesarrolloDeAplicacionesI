@@ -1,7 +1,5 @@
 package edu.uade.ritmofit.profile.data.repository;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import edu.uade.ritmofit.profile.data.model.UserProfile;
@@ -22,7 +20,7 @@ public class ProfileRepositoryImpl implements ProfileRepository{
     }
 
     @Override
-    public Call<List<UserProfile>> getAllUsers() {
-        return service.getAllUsers();
+    public Call<UserProfile> updateUser(String id, UserProfile updateUser) {
+        return service.updateUser(id, updateUser);
     }
 }
