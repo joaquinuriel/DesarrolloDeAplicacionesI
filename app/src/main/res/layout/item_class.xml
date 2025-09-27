@@ -6,7 +6,7 @@
     app:cardCornerRadius="16dp"
     app:cardElevation="6dp"
     app:strokeWidth="1dp"
-    app:strokeColor="@color/purple_200">
+    app:strokeColor="@color/material_on_surface_stroke">
 
     <LinearLayout
         android:orientation="vertical"

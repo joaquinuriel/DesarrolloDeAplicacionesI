@@ -3,49 +3,89 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingTop="8dp"
+    android:paddingBottom="16dp">
 
     <!-- Botones de navegación -->
-    <LinearLayout
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/btn_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_gravity="center"
+        android:paddingTop="0dp"
+        android:padding="0dp">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:paddingStart="16dp"-->
+<!--        android:paddingEnd="16dp">-->
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_profile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Perfil" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_sedes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Sedes" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_classes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Clases" />
-        <Button
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_historial"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.1"
             android:text="Historial" />
-    </LinearLayout>
+
+
+<!--    </LinearLayout>-->
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"/>
 
     <!-- ListView para turnos -->
+    <TextView
+        android:id="@+id/textView3"
+        style = "@style/TextAppearance.Material3.TitleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Turnos Disponibles:"
+        android:textSize="24sp"
+        android:textStyle="bold"/>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <ListView
         android:id="@+id/listViewTurnos"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
-    <Button
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
