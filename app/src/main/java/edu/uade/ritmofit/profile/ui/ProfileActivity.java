@@ -4,6 +4,11 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+import android.widget.ImageView;
+
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,8 +17,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import javax.inject.Inject;
+
 import edu.uade.ritmofit.R;
 import edu.uade.ritmofit.auth.TokenManager;
 import edu.uade.ritmofit.profile.data.model.UserProfile;
@@ -22,6 +29,7 @@ import edu.uade.ritmofit.profile.data.model.UserProfile;
 public class ProfileActivity extends AppCompatActivity {
     @Inject TokenManager tokenManager;
     private ProfileViewModel viewModel;
+    private ImageView profileImage;
     private EditText nameEdit;
     private EditText emailEdit;
     private Button editButton;
@@ -59,6 +67,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        profileImage = findViewById(R.id.profileImage);
         nameEdit = findViewById(R.id.editTextName);
         emailEdit = findViewById(R.id.editTextEmail);
         editButton = findViewById(R.id.btnEdit);
@@ -114,8 +123,28 @@ public class ProfileActivity extends AppCompatActivity {
         return true;
     }
 
-    private void showUser(UserProfile user) {
+   private void showUser(UserProfile user) {
         nameEdit.setText(user.getName());
         emailEdit.setText(user.getEmail());
+        String fotoBase64 = user.getFoto();
+        if (fotoBase64 != null && !fotoBase64.isEmpty()) {
+            Bitmap bitmap = base64ToBitmap(fotoBase64);
+            if (bitmap != null) {
+                profileImage.setImageBitmap(bitmap);
+            } else {
+                android.util.Log.e("ProfileActivity", "Error al decodificar la imagen");
+            }
+        }
+    }
+
+    private Bitmap base64ToBitmap(String base64Str) {
+        try {
+            String cleanBase64 = base64Str.replaceAll("\\s", "");
+            byte[] decodedBytes = Base64.decode(cleanBase64, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+        } catch (Exception e) {
+            android.util.Log.e("ProfileActivity", "Excepción al decodificar Base64: " + e.getMessage());
+            return null;
+        }
     }
 }
