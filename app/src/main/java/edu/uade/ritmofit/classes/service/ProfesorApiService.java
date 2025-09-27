@@ -7,5 +7,5 @@ import retrofit2.http.Path;
 
 public interface ProfesorApiService {
     @GET("profesores/{id}")
-    Call<Profesor> getProfesor(@Path("id") String id);
+    Call<Profesor> getProfesorById(@Path("id") String id);
 }

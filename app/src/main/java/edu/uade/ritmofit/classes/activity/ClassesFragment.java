@@ -1,7 +1,7 @@
 package edu.uade.ritmofit.classes.activity;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,219 +21,153 @@ import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import edu.uade.ritmofit.R;
-import edu.uade.ritmofit.classes.model.Clase;
-import edu.uade.ritmofit.classes.service.ClassApiService;
-import edu.uade.ritmofit.classes.service.ProfesorApiService;
-import edu.uade.ritmofit.classes.service.SedeApiService;
 import edu.uade.ritmofit.classes.adapter.ClassesAdapter;
-import edu.uade.ritmofit.classes.model.Profesor;
-import edu.uade.ritmofit.classes.model.Sede;
-import android.app.DatePickerDialog;
-import edu.uade.ritmofit.data.api.ApiClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import edu.uade.ritmofit.classes.model.Clase;
+import edu.uade.ritmofit.classes.viewmodel.ClassesViewModel;
 
+@AndroidEntryPoint
 public class ClassesFragment extends Fragment {
 
-    private AutoCompleteTextView spSite, spDiscipline;
-    private MaterialButton btnDate;
-    private RecyclerView rvClasses;
-    private TextView tvMessage;
+    private AutoCompleteTextView sedeDropdown, disciplinaDropdown;
+    private MaterialButton fechaButton, btnClearFilters;
+    private RecyclerView clasesRecycler;
+    private TextView mensajeTextView;
 
-    private List<Clase> allClases = new ArrayList<>();
-    private List<Clase> filtered = new ArrayList<>();
+
+    private ClassesAdapter adapter;
+    private ClassesViewModel viewModel;
+
+    private String sedeSeleccionada = "Todos";
+    private String disciplinaSeleccionada = "Todos";
+    private String fechaSeleccionada = null;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_classes, container, false);
-
-        spSite = view.findViewById(R.id.spSite);
-        spDiscipline = view.findViewById(R.id.spDiscipline);
-        btnDate = view.findViewById(R.id.btnDate);
-        rvClasses = view.findViewById(R.id.rvClasses);
-        tvMessage = view.findViewById(R.id.tvMessage);
-
-        rvClasses.setLayoutManager(new LinearLayoutManager(requireContext()));
-
-        loadClassesFromApi();
-
-        btnDate.setOnClickListener(v -> {
-            String current = btnDate.getText().toString();
-            if (!current.equals("Fecha")) {
-                btnDate.setText("Fecha");
-                applyFilters();
-            } else {
-                Calendar c = Calendar.getInstance();
-                DatePickerDialog dp = new DatePickerDialog(requireContext(),
-                        (view1, year, month, dayOfMonth) -> {
-                            String date = year + "-" + String.format("%02d", month + 1) + "-" + String.format("%02d", dayOfMonth);
-                            btnDate.setText(date);
-                            applyFilters();
-                        },
-                        c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-                dp.show();
-            }
-        });
-
-        return view;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_classes, container, false);
     }
 
-    private void loadClassesFromApi() {
-        tvMessage.setVisibility(View.VISIBLE);
-        tvMessage.setText("Cargando...");
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        ApiClient.createService(ClassApiService.class).getClasses().enqueue(new Callback<List<Clase>>() {
-            @Override
-            public void onResponse(Call<List<Clase>> call, Response<List<Clase>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    allClases = response.body();
-                    filtered = new ArrayList<>(allClases);
+        sedeDropdown = view.findViewById(R.id.spSite);
+        disciplinaDropdown = view.findViewById(R.id.spDiscipline);
+        fechaButton = view.findViewById(R.id.btnDate);
+        clasesRecycler = view.findViewById(R.id.rvClasses);
+        mensajeTextView = view.findViewById(R.id.tvMessage);
+        btnClearFilters = view.findViewById(R.id.btnClearFilters);
 
-                    for (Clase c : allClases) {
-                        loadProfesorForClass(c);
-                        loadSedeForClass(c);
-                    }
-                    refreshList();
-                } else {
-                    showMessage("No hay clases disponibles.");
+        clasesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new ClassesAdapter(new ArrayList<>(), clase -> {
+            Bundle args = new Bundle();
+            args.putSerializable("arg_clase", clase);
+            Navigation.findNavController(requireView())
+                    .navigate(R.id.action_classesFragment_to_classDetailFragment, args);
+        });
+
+
+
+        clasesRecycler.setAdapter(adapter);
+
+        viewModel = new ViewModelProvider(this).get(ClassesViewModel.class);
+
+        viewModel.getClases().observe(getViewLifecycleOwner(), clases -> {
+            if (clases == null || clases.isEmpty()) {
+                mostrarMensaje("No hay clases disponibles.");
+            } else {
+                mensajeTextView.setVisibility(View.GONE);
+                adapter.updateData(clases);
+
+                if (sedeDropdown.getAdapter() == null || disciplinaDropdown.getAdapter() == null) {
+                    setupDropdowns(clases);
                 }
             }
-
-            @Override
-            public void onFailure(Call<List<Clase>> call, Throwable t) {
-                Log.e("API_ERROR", "Error en Retrofit", t);
-                showMessage("Ha surgido un error cargando las clases");
-            }
         });
+
+
+
+
+        viewModel.getMensaje().observe(getViewLifecycleOwner(), this::mostrarMensaje);
+
+        fechaButton.setOnClickListener(v -> {
+            Calendar c = Calendar.getInstance();
+            DatePickerDialog dp = new DatePickerDialog(requireContext(),
+                    (picker, year, month, dayOfMonth) -> {
+                        fechaSeleccionada = year + "-" + String.format("%02d", month + 1) + "-" + String.format("%02d", dayOfMonth);
+                        fechaButton.setText(fechaSeleccionada);
+                        aplicarFiltros();
+                    },
+                    c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+            dp.show();
+        });
+
+        btnClearFilters.setOnClickListener(v -> {
+            sedeSeleccionada = "Todos";
+            disciplinaSeleccionada = "Todos";
+            fechaSeleccionada = null;
+
+            sedeDropdown.setText("Todos", false);
+            disciplinaDropdown.setText("Todos", false);
+            fechaButton.setText("Fecha");
+
+            aplicarFiltros();
+        });
+
+
+        viewModel.cargarClases();
     }
 
-    private void loadProfesorForClass(Clase clase) {
-        if (clase.getIdProfesor() == null) return;
 
-        ApiClient.createService(ProfesorApiService.class)
-                .getProfesor(clase.getIdProfesor())
-                .enqueue(new Callback<Profesor>() {
-                    @Override
-                    public void onResponse(Call<Profesor> call, Response<Profesor> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            Profesor profesor = response.body();
-                            clase.setProfesor(profesor.getNombre());
-                            refreshList();
-                        }
-                    }
+    private void setupDropdowns(List<Clase> clases) {
+        List<String> sedes = new ArrayList<>();
+        List<String> disciplinas = new ArrayList<>();
 
-                    @Override
-                    public void onFailure(Call<Profesor> call, Throwable t) {
-                        Log.e("API_ERROR", "Error cargando profesor", t);
-                    }
-                });
-    }
-
-    private void loadSedeForClass(Clase clase) {
-        if (clase.getIdSede() == null) return;
-
-        ApiClient.createService(SedeApiService.class)
-                .getSede(clase.getIdSede())
-                .enqueue(new Callback<Sede>() {
-                    @Override
-                    public void onResponse(Call<Sede> call, Response<Sede> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            Sede sede = response.body();
-                            clase.setSede(sede.getNombre() + " - " + sede.getBarrio());
-                            refreshList();
-
-                            setupDynamicFilters(allClases);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Sede> call, Throwable t) {
-                        Log.e("API_ERROR", "Error cargando sede", t);
-                    }
-                });
-    }
-
-    private void setupDynamicFilters(List<Clase> clases) {
-        Set<String> sedes = new HashSet<>();
-        Set<String> disciplinas = new HashSet<>();
+        sedes.add("Todos");
+        disciplinas.add("Todos");
 
         for (Clase c : clases) {
-            if (c.getIdSede() != null) sedes.add(c.getIdSede());
-            if (c.getDisciplina() != null) disciplinas.add(c.getDisciplina());
+            if (c.getSedeNombre() != null && !sedes.contains(c.getSedeNombre())) {
+                sedes.add(c.getSedeNombre());
+            }
+            if (c.getDisciplina() != null && !disciplinas.contains(c.getDisciplina())) {
+                disciplinas.add(c.getDisciplina());
+            }
         }
 
-        List<String> sedeList = new ArrayList<>();
-        sedeList.add("Todas");
-        sedeList.addAll(sedes);
+        ArrayAdapter<String> sedeAdapter =
+                new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, sedes);
+        ArrayAdapter<String> discAdapter =
+                new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, disciplinas);
 
-        List<String> disciplinaList = new ArrayList<>();
-        disciplinaList.add("Todas");
-        disciplinaList.addAll(disciplinas);
+        sedeDropdown.setAdapter(sedeAdapter);
+        disciplinaDropdown.setAdapter(discAdapter);
 
-        spSite.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, sedeList));
-        spDiscipline.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, disciplinaList));
+        sedeDropdown.setOnItemClickListener((parent, view, position, id) -> {
+            String selectedSede = (String) parent.getItemAtPosition(position);
+            viewModel.filtrar(selectedSede, null, null);
+        });
 
-        spSite.setOnItemClickListener((parent, view, pos, id) -> applyFilters());
-        spDiscipline.setOnItemClickListener((parent, view, pos, id) -> applyFilters());
+        disciplinaDropdown.setOnItemClickListener((parent, view, position, id) -> {
+            String selectedDisciplina = (String) parent.getItemAtPosition(position);
+            viewModel.filtrar(null, selectedDisciplina, null);
+        });
+
     }
 
-    private void applyFilters() {
-        String site = spSite.getText().toString();
-        String discipline = spDiscipline.getText().toString();
-        String date = btnDate.getText().toString();
 
-        filtered.clear();
-        for (Clase it : allClases) {
-            boolean matches = true;
-
-            if (!site.equals("Todas") && !site.isEmpty()) {
-                matches = matches && it.getIdSede() != null && it.getIdSede().contains(site);
-            }
-
-            if (!discipline.equals("Todas") && !discipline.isEmpty()) {
-                matches = matches && it.getDisciplina() != null && it.getDisciplina().equals(discipline);
-            }
-
-            if (!date.equals("Fecha")) {
-                matches = matches && it.getFecha() != null && it.getFecha().equals(date);
-            }
-
-            if (matches) filtered.add(it);
-        }
-
-        refreshList();
+    private void aplicarFiltros() {
+        viewModel.filtrar(sedeSeleccionada, disciplinaSeleccionada, fechaSeleccionada);
     }
 
-    private void refreshList() {
-        if (filtered.isEmpty()) {
-            showMessage("No hay clases para los filtros seleccionados.");
-        } else {
-            tvMessage.setVisibility(View.GONE);
-            rvClasses.setAdapter(new ClassesAdapter(filtered, item -> {
-                Bundle bundle = new Bundle();
-                bundle.putString("classId", item.getIdClase());
-                bundle.putString("disciplina", item.getDisciplina());
-                bundle.putString("fecha", item.getFecha());
-                bundle.putString("hora", item.getHorarioInicio());
-                bundle.putDouble("duracion", item.getDuracion());
-                bundle.putString("profesor", item.getIdProfesor());
-                bundle.putString("sede", item.getIdSede());
-                bundle.putString("estado", item.getEstado());
-                Navigation.findNavController(requireView()).navigate(R.id.action_classes_to_detail, bundle);
-            }));
-        }
-    }
-
-    private void showMessage(String msg) {
-        rvClasses.setAdapter(null);
-        tvMessage.setVisibility(View.VISIBLE);
-        tvMessage.setText(msg);
+    private void mostrarMensaje(String mensaje) {
+        clasesRecycler.setAdapter(null);
+        mensajeTextView.setVisibility(View.VISIBLE);
+        mensajeTextView.setText(mensaje);
     }
 }
