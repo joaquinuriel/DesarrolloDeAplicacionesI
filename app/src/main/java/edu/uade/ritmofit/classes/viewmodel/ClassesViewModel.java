@@ -60,7 +60,6 @@ public class ClassesViewModel extends ViewModel {
                 AtomicInteger pending = new AtomicInteger(0);
 
                 for (Clase c : raw) {
-                    // Resolver Sede
                     if (c.getIdSede() != null && !sedeNames.containsKey(c.getIdSede())) {
                         pending.incrementAndGet();
                         sedeRepository.getSedeById(c.getIdSede()).enqueue(new Callback<SedeDto>() {
@@ -86,7 +85,6 @@ public class ClassesViewModel extends ViewModel {
 
                     }
 
-                    // Resolver Profesor
                     if (c.getIdProfesor() != null && !profNames.containsKey(c.getIdProfesor())) {
                         pending.incrementAndGet();
                         profesorApi.getProfesorById(c.getIdProfesor()).enqueue(new Callback<Profesor>() {
@@ -112,7 +110,7 @@ public class ClassesViewModel extends ViewModel {
                     }
                 }
 
-                // Si no hay nada pendiente
+
                 if (pending.get() == 0) {
                     finishLoading(raw, sedeNames, profNames);
                 }

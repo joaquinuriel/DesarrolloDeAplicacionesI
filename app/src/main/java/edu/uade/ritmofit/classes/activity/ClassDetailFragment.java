@@ -22,6 +22,7 @@ import edu.uade.ritmofit.classes.model.ReservaRequest;
 import edu.uade.ritmofit.classes.service.ClassApiService;
 import edu.uade.ritmofit.classes.service.ReservaApiService;
 import edu.uade.ritmofit.classes.model.Reservas;
+import edu.uade.ritmofit.historial.Model.ReservaDetail;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,7 +48,7 @@ public class ClassDetailFragment extends Fragment {
     public static ClassDetailFragment newInstance(Clase clase) {
         ClassDetailFragment fragment = new ClassDetailFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_CLASE, clase); // Asegurate que Clase implemente Serializable o Parcelable
+        args.putSerializable(ARG_CLASE, clase);
         fragment.setArguments(args);
         return fragment;
     }
@@ -82,44 +83,53 @@ public class ClassDetailFragment extends Fragment {
             tvAddressDetail.setText("Sede: " + clase.getSedeNombre());
             tvEstado.setText("Estado: " + clase.getEstado());
 
-            reservaApiService.getReservasByUsuario(tokenManager.getUserId()).enqueue(new Callback<List<Reservas>>() {
-                @Override
-                public void onResponse(Call<List<Reservas>> call, Response<List<Reservas>> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        List<Reservas> reservas = response.body();
+            btnReservar.setEnabled(false);
+            btnReservar.setText("Verificando...");
 
+            reservaApiService.getReservasByUsuario(tokenManager.getUserId())
+                    .enqueue(new Callback<List<ReservaRequest>>() {
+                        @Override
+                        public void onResponse(Call<List<ReservaRequest>> call, Response<List<ReservaRequest>> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                List<ReservaRequest> reservas = response.body();
 
-                        boolean yaReservado = false;
-                        for (Reservas r : reservas) {
-                            if (r.getIdClase().equals(clase.getIdClase())) {
-                                yaReservado = true;
-                                break;
+                                boolean yaReservado = false;
+                                for (ReservaRequest r : reservas) {
+                                    if (r.getIdClase() != null && r.getIdClase().equals(clase.getIdClase())) {
+                                        yaReservado = true;
+                                        break;
+                                    }
+                                }
+
+                                if (yaReservado) {
+                                    btnReservar.setEnabled(false);
+                                    btnReservar.setText("Ya reservado ✔︎");
+                                } else if (clase.getCupo() <= 0) {
+                                    btnReservar.setEnabled(false);
+                                    btnReservar.setText("Sin cupo");
+                                } else if (clase.getEstado().equals("CANCELADA") || clase.getEstado().equals("EXPIRADA")) {
+                                    btnReservar.setEnabled(false);
+                                    btnReservar.setText("No disponible");
+                                }
+                                else {
+                                    btnReservar.setEnabled(true);
+                                    btnReservar.setText("Reservar");
+                                }
+                            } else {
+                                Log.e("RESERVAS", "Error HTTP: " + response.code() + " - " + response.
+                            body());
+                                btnReservar.setEnabled(false);
+                                btnReservar.setText("Error");
                             }
                         }
-                        if (yaReservado) {
-                            Toast.makeText(getContext(), "true", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getContext(), "false", Toast.LENGTH_SHORT).show();
-                        }
 
 
-
-                        if (yaReservado || clase.getCupo() <= 0) {
+                        @Override
+                        public void onFailure(Call<List<ReservaRequest>> call, Throwable t) {
                             btnReservar.setEnabled(false);
-                            btnReservar.setText("Ya reservado ✔︎");
-                        } else {
-                            btnReservar.setEnabled(true);
-                            btnReservar.setText("Reservar");
+                            btnReservar.setText("Error de red");
                         }
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<List<Reservas>> call, Throwable throwable) {
-                    Toast.makeText(getContext(), "Error al actualizar", Toast.LENGTH_SHORT).show();
-                }
-            });
+                    });
         }
 
         btnReservar.setOnClickListener(v -> {

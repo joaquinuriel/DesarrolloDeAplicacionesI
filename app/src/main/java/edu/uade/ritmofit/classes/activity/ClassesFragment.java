@@ -150,12 +150,12 @@ public class ClassesFragment extends Fragment {
 
         sedeDropdown.setOnItemClickListener((parent, view, position, id) -> {
             String selectedSede = (String) parent.getItemAtPosition(position);
-            viewModel.filtrar(selectedSede, null, null); // Filtra por sede
+            viewModel.filtrar(selectedSede, null, null);
         });
 
         disciplinaDropdown.setOnItemClickListener((parent, view, position, id) -> {
             String selectedDisciplina = (String) parent.getItemAtPosition(position);
-            viewModel.filtrar(null, selectedDisciplina, null); // Filtra por disciplina
+            viewModel.filtrar(null, selectedDisciplina, null);
         });
 
     }
