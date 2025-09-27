@@ -31,7 +31,8 @@
 
         <activity
             android:name=".classes.activity.ClassesActivity"
-            android:exported="true" />
+            android:exported="false" />
+
 
 
 

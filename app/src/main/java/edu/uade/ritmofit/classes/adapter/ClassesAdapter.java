@@ -1,10 +1,12 @@
 package edu.uade.ritmofit.classes.adapter;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import edu.uade.ritmofit.R;
 import edu.uade.ritmofit.classes.model.Clase;
@@ -54,16 +56,24 @@ public class ClassesAdapter extends RecyclerView.Adapter<ClassesAdapter.ClassVie
             tvTitle.setText(it.getDisciplina());
 
             tvMeta.setText(
-                    it.getFecha() + " • " + it.getHorarioInicio().substring(0,5) + " hs"+
+                    it.getFecha() + " • " + it.getHorarioInicio().substring(0,5) + " hs" +
                             " • " + it.getDuracion() + " min • Cupos: " + it.getCupo() +
-                            "\nSede: " + it.getIdSede()
+                            "\nSede: " + (it.getSedeNombre() != null ? it.getSedeNombre() : it.getIdSede())
             );
 
+            tvInstructor.setText("Profesor: " +
+                    (it.getProfesorNombre() != null ? it.getProfesorNombre() : it.getIdProfesor()));
 
-
-            tvInstructor.setText("Profesor: " + it.getIdProfesor());
 
             itemView.setOnClickListener(v -> listener.onClick(it));
+
         }
     }
+
+    public void updateData(List<Clase> nuevasClases) {
+        data.clear();
+        data.addAll(nuevasClases);
+        notifyDataSetChanged();
+    }
+
 }

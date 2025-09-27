@@ -12,6 +12,9 @@ import edu.uade.ritmofit.Sedes.Service.InterfaceService;
 import edu.uade.ritmofit.auth.AuthInterceptor;
 import edu.uade.ritmofit.auth.TokenManager;
 import edu.uade.ritmofit.auth.repository.AuthApiService;
+import edu.uade.ritmofit.classes.service.ClassApiService;
+import edu.uade.ritmofit.classes.service.ProfesorApiService;
+import edu.uade.ritmofit.classes.service.ReservaApiService;
 import edu.uade.ritmofit.historial.Repository.InterfaceRepositoryHistorial;
 import edu.uade.ritmofit.historial.Repository.RepositoryHistorial;
 import edu.uade.ritmofit.historial.Service.InterfaceHistorialService;
@@ -82,5 +85,24 @@ public class NetworkModule {
     @Singleton
     public HomeService provideHomeService(Retrofit retrofit) {
         return retrofit.create(HomeService.class);
+    }
+
+
+    @Provides
+    @Singleton
+    public ClassApiService provideClassService(Retrofit retrofit) {
+        return retrofit.create(ClassApiService.class);
+    }
+
+    @Provides
+    @Singleton
+    public ProfesorApiService provideProfesorApiService(Retrofit retrofit) {
+        return retrofit.create(ProfesorApiService.class);
+    }
+
+    @Provides
+    @Singleton
+    public ReservaApiService provideReservaService(Retrofit retrofit) {
+        return retrofit.create(ReservaApiService.class);
     }
 }

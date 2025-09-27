@@ -1,6 +1,7 @@
 package edu.uade.ritmofit.classes.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,65 +9,159 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import edu.uade.ritmofit.R;
+import edu.uade.ritmofit.auth.TokenManager;
+import edu.uade.ritmofit.classes.model.Clase;
+import edu.uade.ritmofit.classes.model.ReservaRequest;
+import edu.uade.ritmofit.classes.service.ClassApiService;
+import edu.uade.ritmofit.classes.service.ReservaApiService;
+import edu.uade.ritmofit.classes.model.Reservas;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+import javax.inject.Inject;
+import java.util.List;
+
+@AndroidEntryPoint
 public class ClassDetailFragment extends Fragment {
 
-    private TextView tvTitleDetail, tvMetaDetail, tvInstructorDetail, tvAddressDetail, tvEstado;
-    private Button btnReservar;
+    private static final String ARG_CLASE = "arg_clase";
+    private Clase clase;
+
+    @Inject
+    ReservaApiService reservaApiService;
+
+    @Inject
+    ClassApiService classApiService;
+
+    @Inject
+    TokenManager tokenManager;
+
+    public static ClassDetailFragment newInstance(Clase clase) {
+        ClassDetailFragment fragment = new ClassDetailFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_CLASE, clase); // Asegurate que Clase implemente Serializable o Parcelable
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            clase = (Clase) getArguments().getSerializable("arg_clase");
+        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_class_detail, container, false);
 
-        tvTitleDetail = view.findViewById(R.id.tvTitleDetail);
-        tvMetaDetail = view.findViewById(R.id.tvMetaDetail);
-        tvInstructorDetail = view.findViewById(R.id.tvInstructorDetail);
-        tvAddressDetail = view.findViewById(R.id.tvAddressDetail);
-        tvEstado = view.findViewById(R.id.tvEstado);
-        btnReservar = view.findViewById(R.id.btnReservar);
+        TextView tvTitleDetail = view.findViewById(R.id.tvTitleDetail);
+        TextView tvMetaDetail = view.findViewById(R.id.tvMetaDetail);
+        TextView tvInstructorDetail = view.findViewById(R.id.tvInstructorDetail);
+        TextView tvAddressDetail = view.findViewById(R.id.tvAddressDetail);
+        TextView tvEstado = view.findViewById(R.id.tvEstado);
+        Button btnReservar = view.findViewById(R.id.btnReservar);
 
-        // Obtener argumentos directamente del Bundle
-        Bundle args = getArguments();
-        if (args == null) {
-            Toast.makeText(requireContext(), "No se recibieron datos", Toast.LENGTH_SHORT).show();
-            Navigation.findNavController(view).navigateUp();
-            return view;
+
+
+
+        if (clase != null) {
+            tvTitleDetail.setText(clase.getDisciplina());
+            tvMetaDetail.setText(clase.getFecha() + " " + clase.getHorarioInicio());
+            tvInstructorDetail.setText("Profesor: " + clase.getProfesorNombre());
+            tvAddressDetail.setText("Sede: " + clase.getSedeNombre());
+            tvEstado.setText("Estado: " + clase.getEstado());
+
+            reservaApiService.getReservasByUsuario(tokenManager.getUserId()).enqueue(new Callback<List<Reservas>>() {
+                @Override
+                public void onResponse(Call<List<Reservas>> call, Response<List<Reservas>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        List<Reservas> reservas = response.body();
+
+
+                        boolean yaReservado = false;
+                        for (Reservas r : reservas) {
+                            if (r.getIdClase().equals(clase.getIdClase())) {
+                                yaReservado = true;
+                                break;
+                            }
+                        }
+                        if (yaReservado) {
+                            Toast.makeText(getContext(), "true", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "false", Toast.LENGTH_SHORT).show();
+                        }
+
+
+
+                        if (yaReservado || clase.getCupo() <= 0) {
+                            btnReservar.setEnabled(false);
+                            btnReservar.setText("Ya reservado ✔︎");
+                        } else {
+                            btnReservar.setEnabled(true);
+                            btnReservar.setText("Reservar");
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Reservas>> call, Throwable throwable) {
+                    Toast.makeText(getContext(), "Error al actualizar", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
-
-        // Extraer valores del Bundle con claves específicas
-        String classId = args.getString("classId");
-        String title = (classId != null && !classId.isEmpty()) ? "Clase " + classId : "Detalles";
-        String disciplina = args.getString("disciplina");
-        String fecha = args.getString("fecha");
-        String hora = args.getString("hora");
-        Double duracion = args.getDouble("duracion");
-        String profesor = args.getString("profesor");
-        String sede = args.getString("sede");
-        String estado = args.getString("estado");
-
-        tvTitleDetail.setText(disciplina != null ? disciplina : "Sin título");
-        String formattedMeta = "Sin datos";
-        if (fecha != null && hora != null && duracion != null) {
-            formattedMeta = String.format("%s %s • %.0f min", fecha, hora, duracion);
-        }
-        tvMetaDetail.setText(formattedMeta);
-        tvInstructorDetail.setText("Profesor: " + (profesor != null ? profesor : "Sin profesor"));
-        tvAddressDetail.setText("Sede: " + (sede != null ? sede : "Sin sede"));
-        tvEstado.setText("Estado: " + (estado != null ? estado : "Sin estado"));
 
         btnReservar.setOnClickListener(v -> {
-            btnReservar.setEnabled(false);
-            btnReservar.setText("Reservado ✔︎");
-        });
+            String userId = tokenManager.getUserId();
+            ReservaRequest request = new ReservaRequest(clase.getIdClase(), userId);
+            clase.setCupo(clase.getCupo() - 1);
 
-        Button backButton = view.findViewById(R.id.back_button);
-        if (backButton != null) {
-            backButton.setOnClickListener(v -> Navigation.findNavController(v).navigateUp());
-        }
+            reservaApiService.reservarClase(request).enqueue(new retrofit2.Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        btnReservar.setEnabled(false);
+                        btnReservar.setText("Reservado ✔︎");
+                        Toast.makeText(requireContext(), "Reservas confirmada", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(requireContext(), "Error al reservar: " + response.code(), Toast.LENGTH_LONG).show();
+                    }
+                }
+
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(requireContext(), "Fallo en la conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+
+            classApiService.updateClase(clase.getIdClase(), clase).enqueue(new Callback<Clase>() {
+                @Override
+                public void onResponse(Call<Clase> call, Response<Clase> res) {
+                    if (res.isSuccessful()) {
+                        btnReservar.setEnabled(false);
+                        btnReservar.setText("Reservado ✔︎");
+                        Toast.makeText(getContext(), "Reservas confirmada", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Clase> call, Throwable t) {
+                    Toast.makeText(getContext(), "Error al actualizar clase", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
 
         return view;
     }

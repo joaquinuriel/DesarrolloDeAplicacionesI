@@ -120,79 +120,23 @@
     </fragment>
 
 
-
     <fragment
-        android:id="@+id/classesFragment"
-        android:name="edu.uade.ritmofit.classes.activity.ClassesFragment"
-        tools:layout="@layout/fragment_classes">
-        <action
-            android:id="@+id/action_classes_to_detail"
-            app:destination="@id/classDetailFragment"/>
-        <argument
-            android:name="classId"
-            app:argType="string" />
-        <argument
-            android:name="disciplina"
-            app:argType="string" />
-        <argument
-            android:name="fecha"
-            app:argType="string" />
-        <argument
-            android:name="hora"
-            app:argType="string" />
-        <argument
-            android:name="duracion"
-            app:argType="string" />
-        <argument
-            android:name="profesor"
-            app:argType="string" />
-        <argument
-            android:name="sede"
-            app:argType="string" />
-        <argument
-            android:name="estado"
-            app:argType="string" />
+            android:id="@+id/classesFragment"
+            android:name="edu.uade.ritmofit.classes.activity.ClassesFragment"
+            android:label="Clases"
+            tools:layout="@layout/fragment_classes">
 
         <action
-            android:id="@+id/action_classes_to_home"
-            app:destination="@id/home_fragment"/>
-
+                android:id="@+id/action_classesFragment_to_classDetailFragment"
+                app:destination="@id/classDetailFragment" />
     </fragment>
 
-
     <fragment
-        android:id="@+id/classDetailFragment"
-        android:name="edu.uade.ritmofit.classes.activity.ClassDetailFragment"
-        tools:layout="@layout/fragment_class_detail" >
-        <argument
-            android:name="classId"
-            app:argType="string" />
-        <argument
-            android:name="disciplina"
-            app:argType="string" />
-        <argument
-            android:name="fecha"
-            app:argType="string" />
-        <argument
-            android:name="hora"
-            app:argType="string" />
-        <argument
-            android:name="duracion"
-            app:argType="string" />
-        <argument
-            android:name="profesor"
-            app:argType="string" />
-        <argument
-            android:name="sede"
-            app:argType="string" />
-        <argument
-            android:name="estado"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_classes_detail_to_home"
-            app:destination="@id/home_fragment"/>
+            android:id="@+id/classDetailFragment"
+            android:name="edu.uade.ritmofit.classes.activity.ClassDetailFragment"
+            android:label="Detalle de clase"
+            tools:layout="@layout/fragment_class_detail" />
 
-    </fragment>
     <activity
         android:id="@+id/profileActivity"
         android:name="edu.uade.ritmofit.profile.ui.ProfileActivity"
