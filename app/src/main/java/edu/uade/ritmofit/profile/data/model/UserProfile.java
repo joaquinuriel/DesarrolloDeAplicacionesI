@@ -20,6 +20,10 @@ public class UserProfile {
         this.email = email;
     }
 
+    public UserProfile(String foto) {
+        this.foto = foto;
+    }
+
     public String getFoto() {
         return foto;
     }

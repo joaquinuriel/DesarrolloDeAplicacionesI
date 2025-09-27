@@ -77,4 +77,7 @@ dependencies {
     // Procesador de anotaciones para Hilt
     annotationProcessor 'com.google.dagger:hilt-compiler:2.51'
 
+    // Dependencias de Glide (carga y manejo de imágenes)
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
 }
