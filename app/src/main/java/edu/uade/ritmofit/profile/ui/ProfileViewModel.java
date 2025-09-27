@@ -5,8 +5,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
@@ -20,7 +18,6 @@ import retrofit2.Response;
 public class ProfileViewModel extends ViewModel {
     private final ProfileRepository profileRepository;
     private final MutableLiveData<UserProfile> userProfile = new MutableLiveData<>();
-    private final MutableLiveData<List<UserProfile>> allUsers = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
 
     @Inject
@@ -30,10 +27,6 @@ public class ProfileViewModel extends ViewModel {
 
     public LiveData<UserProfile> getUserProfile() {
         return userProfile;
-    }
-
-    public LiveData<List<UserProfile>> getAllUsers() {
-        return allUsers;
     }
 
     public LiveData<String> getError() {
@@ -58,21 +51,22 @@ public class ProfileViewModel extends ViewModel {
         });
     }
 
-    public void fetchAllUsers() {
-        profileRepository.getAllUsers().enqueue(new Callback<List<UserProfile>>() {
+    public void updateUser(String id, UserProfile updatedUser) {
+        profileRepository.updateUser(id, updatedUser).enqueue(new Callback<UserProfile>() {
             @Override
-            public void onResponse(@NonNull Call<List<UserProfile>> call, Response<List<UserProfile>> response) {
+            public void onResponse(@NonNull Call<UserProfile> call, Response<UserProfile> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    allUsers.postValue(response.body());
+                    userProfile.postValue(response.body());
                 } else {
-                    error.postValue("Error al obtener usuarios");
+                    error.postValue("Error al actualizar usuario");
                 }
             }
 
             @Override
-            public void onFailure(Call<List<UserProfile>> call, Throwable t) {
+            public void onFailure(Call<UserProfile> call, Throwable t) {
                 error.postValue(t.getMessage());
             }
         });
     }
+
 }
