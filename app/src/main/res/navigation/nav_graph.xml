@@ -108,19 +108,6 @@
 
 
     <fragment
-        android:id="@+id/profile_fragment"
-        android:name="edu.uade.ritmofit.profile.ui.ProfileFragment"
-        tools:layout="@layout/profile_fragment"
-        >
-
-        <action
-            android:id="@+id/action_profile_to_home"
-            app:destination="@id/home_fragment" />
-
-    </fragment>
-
-
-    <fragment
             android:id="@+id/classesFragment"
             android:name="edu.uade.ritmofit.classes.activity.ClassesFragment"
             android:label="Clases"

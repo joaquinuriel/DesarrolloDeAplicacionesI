@@ -1,8 +1,8 @@
-package edu.uade.ritmofit.profile.model;
+package edu.uade.ritmofit.profile.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+public class UserProfile {
     @SerializedName("id")
     private String userId;
 
@@ -14,6 +14,15 @@ public class User {
 
     @SerializedName("foto")
     private  String foto;
+
+    public UserProfile(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+
+    public UserProfile(String foto) {
+        this.foto = foto;
+    }
 
     public String getFoto() {
         return foto;
@@ -49,7 +58,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserProfile{" +
                 "userId='" + userId + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
