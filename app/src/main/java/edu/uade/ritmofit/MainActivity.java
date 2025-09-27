@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -41,19 +43,22 @@ public class MainActivity extends AppCompatActivity {
                 String email = securePrefs.getString("emailForSignIn", null);
                 String pword = securePrefs.getString("passwordToLink", null);
 
-                // Retrieve the saved email from SharedPreferences
-                // SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
-                // String email = prefs.getString("emailForSignIn", null);
-
                 if (email != null && pword != null) {
-                    auth.signInWithEmailAndPassword(email, pword)
+                    auth.signInWithEmailLink(email, emailLink)
                             .addOnCompleteListener(this, task -> {
                                 if (task.isSuccessful()) {
                                     Log.d("Auth", "Successfully signed in!");
                                     FirebaseUser user = task.getResult().getUser();
-                                    // TODO: move to main app screen
-
-
+                                    AuthCredential credential = EmailAuthProvider.getCredential(email, pword);
+                                    assert user != null;
+                                    user.linkWithCredential(credential)
+                                            .addOnCompleteListener(task1 -> {
+                                                if (task1.isSuccessful()) {
+                                                    FirebaseUser updatedUser = task1.getResult().getUser();
+                                                } else {
+                                                    Exception e = task1.getException();
+                                                }
+                                            });
                                 } else {
                                     Log.e("Auth", "Error signing in", task.getException());
                                 }
