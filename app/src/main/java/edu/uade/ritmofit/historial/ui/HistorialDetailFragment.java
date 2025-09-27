@@ -135,7 +135,7 @@ public class HistorialDetailFragment extends Fragment {
         public void onBindViewHolder(@NonNull CalificacionViewHolder holder, int position) {
             CalificacionDTO calificacion = calificaciones.get(position);
             holder.textView.setText("Opinaron: " + (calificacion.getComentario() != null ? calificacion.getComentario() : "Sin valor"));
-           // holder.textView.setText("Estrellas: " + calificacion.getEstrellas());
+            // holder.textView.setText("Estrellas: " + calificacion.getEstrellas());
         }
 
         @Override
