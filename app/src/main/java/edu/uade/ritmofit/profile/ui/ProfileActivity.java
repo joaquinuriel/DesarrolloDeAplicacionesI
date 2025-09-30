@@ -27,11 +27,15 @@ import javax.inject.Inject;
 
 import edu.uade.ritmofit.R;
 import edu.uade.ritmofit.auth.TokenManager;
+import edu.uade.ritmofit.auth.repository.AuthRepository;
+import edu.uade.ritmofit.home.ui.HomeActivity;
 import edu.uade.ritmofit.profile.data.model.UserProfile;
 
 @AndroidEntryPoint
 public class ProfileActivity extends AppCompatActivity {
     @Inject TokenManager tokenManager;
+    @Inject
+    AuthRepository authRepository;
     private ProfileViewModel viewModel;
     private static final int PICK_IMAGE_REQUEST = 1001;
     private ImageView profileImage;
@@ -39,6 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
     private EditText emailEdit;
     private Button editButton;
     private Button saveButton;
+    private Button logoutButton;
     private String userId;
 
     @Override
@@ -99,6 +104,7 @@ public class ProfileActivity extends AppCompatActivity {
         emailEdit = findViewById(R.id.editTextEmail);
         editButton = findViewById(R.id.btnEdit);
         saveButton = findViewById(R.id.btnSave);
+        logoutButton = findViewById(R.id.btnLogout);
 
         nameEdit.setEnabled(false);
         emailEdit.setEnabled(false);
@@ -143,6 +149,15 @@ public class ProfileActivity extends AppCompatActivity {
                     .setPositiveButton("Sí", (dialog, which) -> openImagePicker())
                     .setNegativeButton("No", null)
                     .show();
+        });
+
+        logoutButton.setOnClickListener(v -> {
+            authRepository.clearAccessToken();
+            Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            // TODO: Si cambiamos el login a una activity, dejara de funcionar.
         });
     }
 

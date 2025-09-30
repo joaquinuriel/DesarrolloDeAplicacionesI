@@ -5,37 +5,32 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/login_fragment">
 
-    <fragment   android:id="@+id/login_fragment"
+    <fragment
+        android:id="@+id/login_fragment"
         android:name="edu.uade.ritmofit.auth.LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_login_to_home"
             app:destination="@id/home_fragment" />
-
     </fragment>
 
-    <fragment  android:id="@+id/home_fragment"
+    <fragment
+        android:id="@+id/home_fragment"
         android:name="edu.uade.ritmofit.home.ui.HomeFragment"
         android:label="Ritmofit - Home"
         tools:layout="@layout/home_fragment">
-
         <action
             android:id="@+id/action_home_to_sedes_graph"
             app:destination="@id/sedesFragment" />
-
         <action
             android:id="@+id/action_home_to_profile"
-            app:destination="@id/profileActivity"
-           />
+            app:destination="@id/profileActivity" />
         <action
             android:id="@+id/action_home_to_classes"
             app:destination="@id/classesFragment" />
-
-
         <action
             android:id="@+id/action_home_to_login"
             app:destination="@id/login_fragment" />
-
         <action
             android:id="@+id/action_home_to_historial"
             app:destination="@id/historial"
@@ -43,7 +38,6 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-
     </fragment>
 
     <fragment
@@ -58,8 +52,8 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-
     </fragment>
+
     <fragment
         android:id="@+id/historial_detail"
         android:name="edu.uade.ritmofit.historial.ui.HistorialDetailFragment"
@@ -69,11 +63,6 @@
             android:name="reservaId"
             app:argType="string" />
     </fragment>
-
-
-
-
-
 
     <fragment
         android:id="@+id/sedesFragment"
@@ -87,12 +76,7 @@
             android:name="sedeId"
             app:argType="string" />
         </action >
-
-
     </fragment>
-
-
-
 
     <fragment
         android:id="@+id/sedeDetailFragment"
@@ -102,47 +86,28 @@
         <argument
             android:name="sedeId"
             app:argType="string" />
-
-
     </fragment>
 
-
-
-
-
     <fragment
-        android:id="@+id/profile_fragment"
-        android:name="edu.uade.ritmofit.profile.ui.ProfileFragment"
-        android:label="Mi Perfil"
-        tools:layout="@layout/profile_fragment"
-        >
-
+        android:id="@+id/classesFragment"
+        android:name="edu.uade.ritmofit.classes.activity.ClassesFragment"
+        android:label="Clases"
+        tools:layout="@layout/fragment_classes">
         <action
                 android:id="@+id/action_classesFragment_to_classDetailFragment"
                 app:destination="@id/classDetailFragment" />
     </fragment>
 
     <fragment
-            android:id="@+id/classesFragment"
-            android:name="edu.uade.ritmofit.classes.activity.ClassesFragment"
-            android:label="Clases"
-            tools:layout="@layout/fragment_classes">
+        android:id="@+id/classDetailFragment"
+        android:name="edu.uade.ritmofit.classes.activity.ClassDetailFragment"
+        android:label="Detalle de clase"
+        tools:layout="@layout/fragment_class_detail" />
 
-        <action
-                android:id="@+id/action_classesFragment_to_classDetailFragment"
-                app:destination="@id/classDetailFragment" />
-    </fragment>
-
-    <fragment
-            android:id="@+id/classDetailFragment"
-            android:name="edu.uade.ritmofit.classes.activity.ClassDetailFragment"
-            android:label="Detalle de clase"
-            tools:layout="@layout/fragment_class_detail" />
     <activity
         android:id="@+id/profileActivity"
         android:name="edu.uade.ritmofit.profile.ui.ProfileActivity"
         android:label="activity_profile"
         tools:layout="@layout/activity_profile" />
-
 
 </navigation>

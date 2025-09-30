@@ -79,7 +79,6 @@ public class HomeFragment extends Fragment {
         Button btnProfile = view.findViewById(R.id.btn_profile);
         Button btnSedes = view.findViewById(R.id.btn_sedes);
         Button btnClasses = view.findViewById(R.id.btn_classes);
-        Button btnLogout = view.findViewById(R.id.btn_logout);
         Button btnHistorial = view.findViewById(R.id.btn_historial);
 
 
@@ -94,10 +93,6 @@ public class HomeFragment extends Fragment {
             navController.navigate(R.id.action_home_to_sedes_graph);
         });
         btnClasses.setOnClickListener(v -> navController.navigate(R.id.action_home_to_classes));
-        btnLogout.setOnClickListener(v -> {
-            authRepository.clearAccessToken();
-            navController.navigate(R.id.action_home_to_login);
-        });
     }
 
     @Override
